@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lifecoach_app/locator.dart';
-import 'package:lifecoach_app/model/user_model.dart';
+import 'package:lifecoach_app/model/user.dart';
 import 'package:lifecoach_app/repository/user_repository.dart';
 import 'package:lifecoach_app/services/auth_base.dart';
 
@@ -96,7 +96,7 @@ User get user => _user;
 
 
     }catch(e){
-      debugPrint("ViewModel Current User Error!!!" +e.toString());
+      debugPrint("ViewModel SignInWithEmailAndPassword User Error!!!" +e.toString());
       return null;
     }finally {
       state = ViewState.Idle;
@@ -105,20 +105,19 @@ User get user => _user;
 
   @override
   Future<User> createWithEmailAndPassword(String email, String password) async{
-    try{
+
       if(_emailPasswordControl(email, password)){
-        state=ViewState.Busy;
-        _user = await _repository.createWithEmailAndPassword(email, password);
-        return _user;
+
+        try{
+          state=ViewState.Busy;
+          _user = await _repository.createWithEmailAndPassword(email, password);
+
+          return _user;
+        }finally{
+          state = ViewState.Idle;
+        }
       }else return null;
 
-
-    }catch(e){
-      debugPrint("ViewModel Current User Error!!!" +e.toString());
-      return null;
-    }finally {
-      state = ViewState.Idle;
-    }
   }
 
   bool _emailPasswordControl(String email, String password){

@@ -1,4 +1,4 @@
-import 'package:lifecoach_app/model/user_model.dart';
+import 'package:lifecoach_app/model/user.dart';
 
 abstract class AuthBase{
   Future<User> currentUser();

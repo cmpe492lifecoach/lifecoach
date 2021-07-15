@@ -1,4 +1,4 @@
-import 'package:lifecoach_app/model/user_model.dart';
+import 'package:lifecoach_app/model/user.dart';
 import 'package:lifecoach_app/services/auth_base.dart';
 
 class FakeAuthenticationService implements AuthBase {

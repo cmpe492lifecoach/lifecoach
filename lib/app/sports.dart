@@ -14,7 +14,7 @@ class SportsPage extends StatelessWidget {
        children: <Widget>[
          Expanded(
            child: ReusableCard(
-
+            
              onPress: () {
                Navigator.push(context,
                    MaterialPageRoute(builder: (context)=> BodyBuildingPage())
@@ -22,14 +22,16 @@ class SportsPage extends StatelessWidget {
 
              },
              colour: Colors.deepPurpleAccent,
-             images: Image.asset('images/bodybuilding.pose.jpeg'),
+             
 
              cardChild: Column(
                mainAxisAlignment: MainAxisAlignment.center,
                children: <Widget>[
+                 Image.network('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5SKtBifX8PHfjVGL7q7mNutqIOHTPlqlWtw&usqp=CAU'),
+                 SizedBox(height: 10,),
                  Text(
                    'BODYBUILDING',
-                   style: TextStyle(color: Colors.white),
+                   style: TextStyle(color: Colors.white,),
                  ),
                  Row(
                    mainAxisAlignment: MainAxisAlignment.center,
@@ -56,7 +58,10 @@ class SportsPage extends StatelessWidget {
              colour: Colors.deepPurpleAccent,
              cardChild: Column(
                mainAxisAlignment: MainAxisAlignment.center,
+
                children: <Widget>[
+                 Image.network('https://p.kindpng.com/picc/s/616-6167538_run-icon-circle-hd-png-download.png'),
+                 SizedBox(height: 10,),
                  Text(
                    'RUNNING',
                    style: TextStyle(color: Colors.white),
@@ -74,6 +79,14 @@ class SportsPage extends StatelessWidget {
                ],
              ),
            ),
+         ),
+         BottomButton(
+           buttonTitle: 'CALCULATE',
+           onTap: () {
+
+
+
+           },
          ),
 
         ],

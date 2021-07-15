@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:lifecoach_app/logInPage/social_login_button.dart';
-import 'package:lifecoach_app/model/user_model.dart';
+import 'package:flutter/services.dart';
+import 'package:lifecoach_app/app/error_exception.dart';
+import 'package:lifecoach_app/common_widget/platform_alert_dialog.dart';
+import 'package:lifecoach_app/common_widget/social_login_button.dart';
+import 'package:lifecoach_app/model/user.dart';
 import 'package:lifecoach_app/viewmodel/user_model.dart';
 import 'package:provider/provider.dart';
 
@@ -21,13 +24,27 @@ class _EmailAndPasswordPageState extends State<EmailAndPasswordPage> {
     debugPrint("Email: "+_email + " Password: "+_password);
     final _userModel = Provider.of<UserModel>(context, listen: false);
     if(_formType == FormType.LogIn){
-        User _loginUser = await _userModel.signInWithEmailAndPassword(_email, _password);
-        if(_loginUser != null)
-          print("user ıd:" +_loginUser.userID.toString());
+       try {
+         User _loginUser = await _userModel.signInWithEmailAndPassword(_email, _password);
+         if(_loginUser != null)
+           print("user ıd:" +_loginUser.userID.toString());
+       }on PlatformException catch (e){
+         debugPrint("Widget SignIn Error catched :" +e.code.toString());
+       }
     }else {
-      User _createUser = await _userModel.createWithEmailAndPassword(_email, _password);
-      if(_createUser != null)
-        print("user ıd:" +_createUser.userID.toString());
+      try{
+        User _createUser = await _userModel.createWithEmailAndPassword(_email, _password);
+        if(_createUser != null)
+          print("user ıd:" +_createUser.userID.toString());
+      }on PlatformException catch(e){
+         PlatformAlertDialog(
+                header: "Create User Error",
+                content: Errors.showErrors(e.code),
+                mainButtonText: "Close",
+
+          ).show(context);
+        }
+
     }
 
   }

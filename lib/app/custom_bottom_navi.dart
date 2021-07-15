@@ -3,13 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:lifecoach_app/app/tab_items.dart';
 
 class CustomBottomNavigation extends StatelessWidget {
-  const CustomBottomNavigation({Key key, @required this.currentTab, @required this.onSelectedTab, @required this.createPage}) : super(key: key);
+  const CustomBottomNavigation({
+    Key key,
+    @required this.currentTab,
+    @required this.onSelectedTab,
+    @required this.createPage,
+    @required this.navigatorKeys,
+  })
+      : super(key: key);
 
 
 
   final TabItem currentTab;
   final ValueChanged<TabItem> onSelectedTab;
   final Map<TabItem, Widget> createPage;
+  final Map<TabItem, GlobalKey<NavigatorState>> navigatorKeys;
 
 
 
@@ -31,6 +39,7 @@ class CustomBottomNavigation extends StatelessWidget {
     tabBuilder: (context,index) {
       final showItem = TabItem.values[index];
       return CupertinoTabView(
+        navigatorKey: navigatorKeys[showItem],
         builder: (context) {
               return createPage[showItem];
         });

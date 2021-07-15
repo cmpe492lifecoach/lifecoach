@@ -1,13 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lifecoach_app/logInPage/email_password_page.dart';
-import 'package:lifecoach_app/model/user_model.dart';
+import 'package:lifecoach_app/model/user.dart';
 import 'package:lifecoach_app/services/auth_base.dart';
 import 'package:lifecoach_app/services/firebase_auth_service.dart';
 import 'package:lifecoach_app/viewmodel/user_model.dart';
 import 'package:provider/provider.dart';
 import '../locator.dart';
-import 'social_login_button.dart';
+import '../common_widget/social_login_button.dart';
 import 'package:flutter/cupertino.dart';
 class SignInPage extends StatelessWidget {
 

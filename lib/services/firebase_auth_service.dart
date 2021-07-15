@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:lifecoach_app/model/user_model.dart';
+import 'package:lifecoach_app/model/user.dart';
 import 'package:lifecoach_app/services/auth_base.dart';
 
 class FirebaseAuthService implements AuthBase {
@@ -85,13 +85,10 @@ class FirebaseAuthService implements AuthBase {
 
   @override
   Future<User> createWithEmailAndPassword(String email, String password) async{
-    try{
+
       AuthResult result = await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
       return _userFromFirebase(result.user);
-    }catch(e){
-      print("Error create account" +e.toString());
-      return null;
-    }
+
   }
 
 }

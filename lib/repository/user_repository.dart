@@ -1,5 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:lifecoach_app/locator.dart';
-import 'package:lifecoach_app/model/user_model.dart';
+import 'package:lifecoach_app/model/user.dart';
 import 'package:lifecoach_app/services/auth_base.dart';
 import 'package:lifecoach_app/services/fake_auth_service.dart';
 import 'package:lifecoach_app/services/firebase_auth_service.dart';
@@ -57,7 +58,12 @@ class Repository implements AuthBase{
     if(appMode == AppMode.DEBUG){
       return await _fakeAuthenticationService.signInWithEmailAndPassword(email, password);
     }else {
-      return await _firebaseAuthService.signInWithEmailAndPassword(email, password);
+      try{
+        User _user = await _firebaseAuthService.signInWithEmailAndPassword(email, password);
+        return await _fireStoreDBService.readUser(_user.userID);
+      }catch(e){
+        debugPrint("SignInWirhEmailAndPassword Repo Error :" +e.toString());
+      }
     }
   }
 
@@ -66,11 +72,14 @@ class Repository implements AuthBase{
     if(appMode == AppMode.DEBUG){
       return await _fakeAuthenticationService.createWithEmailAndPassword(email, password);
     }else {
-      User _user = await _firebaseAuthService.createWithEmailAndPassword(email, password);
-      bool _result = await _fireStoreDBService.saveUser(_user);
-      if(_result){
-        return _user;
-      }else return null;
+
+        User _user = await _firebaseAuthService.createWithEmailAndPassword(email, password);
+        bool _result = await _fireStoreDBService.saveUser(_user);
+        if(_result){
+
+          return await _fireStoreDBService.readUser(_user.userID);
+        }else return null;
+
     }
   }
 

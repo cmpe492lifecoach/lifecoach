@@ -6,11 +6,7 @@ import 'package:lifecoach_app/app/profile.dart';
 import 'package:lifecoach_app/app/sports.dart';
 import 'package:lifecoach_app/app/tab_items.dart';
 import 'package:lifecoach_app/app/toDo.dart';
-import 'package:lifecoach_app/viewmodel/user_model.dart';
-import 'package:provider/provider.dart';
-
-import 'locator.dart';
-import 'model/user_model.dart';
+import 'model/user.dart';
 
 class  HomePage extends StatefulWidget {
 
@@ -27,6 +23,15 @@ class  HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
 
   TabItem _currentTab = TabItem.Sports; //sayfada ilk açılıcak sayfayı belirledik.
+
+  Map<TabItem, GlobalKey<NavigatorState>> navigatorKeys = {
+    TabItem.Sports : GlobalKey<NavigatorState>(),
+    TabItem.Nutrition : GlobalKey<NavigatorState>(),
+    TabItem.ToDo : GlobalKey<NavigatorState>(),
+    TabItem.Profil : GlobalKey<NavigatorState>(),
+  };
+
+
   Map<TabItem, Widget> allPages() {
     return {
       TabItem.Sports : SportsPage(),
@@ -40,10 +45,24 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
 
-    return Container(child: CustomBottomNavigation(createPage : allPages(), currentTab: _currentTab, onSelectedTab: (selectedTab){
-      setState(() {
-        _currentTab=selectedTab;
-      });
+    return WillPopScope(
+      onWillPop: () async => !await navigatorKeys[_currentTab].currentState.maybePop(),
+      child: CustomBottomNavigation(
+        createPage : allPages(),
+        navigatorKeys: navigatorKeys,
+        currentTab: _currentTab,
+        onSelectedTab: (selectedTab){
+          //diğer sayfaları açıldığında en başa dönme işlemi
+          if(selectedTab == _currentTab){
+            navigatorKeys[selectedTab].currentState.popUntil((route) => route.isFirst);
+          }else{
+            setState(() {
+              _currentTab=selectedTab;
+            });
+          }
+
+
+
     },),);
 
 
@@ -54,13 +73,6 @@ class _HomePageState extends State<HomePage> {
 
 
 }
-/*
 
-Future<bool> _logOut(BuildContext context) async{
-    final _userModel = Provider.of<UserModel>(context, listen: false);
-    bool result = await _userModel.signOut();
-    return result;
-  }
- */
 
 

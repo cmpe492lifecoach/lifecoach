@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lifecoach_app/app/sports_page_extra/ExerciseMode.dart';
 
 class BodyBuildingPage extends StatelessWidget {
   @override
@@ -7,9 +8,8 @@ class BodyBuildingPage extends StatelessWidget {
       appBar: AppBar(
         title: Text("Body Building"),
       ),
-      body: Center(
-        child: Text("Welcome"),
-      ),
+      body: ExerciseMode(),
+
     );
   }
 }

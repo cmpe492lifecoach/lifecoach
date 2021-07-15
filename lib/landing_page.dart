@@ -8,7 +8,7 @@ import 'package:lifecoach_app/services/firebase_auth_service.dart';
 import 'package:lifecoach_app/viewmodel/user_model.dart';
 import 'package:provider/provider.dart';
 
-import 'model/user_model.dart';
+import 'model/user.dart';
 
 
 class LandingPage extends StatelessWidget {

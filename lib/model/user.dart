@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +21,7 @@ class User {
     return {
       'userID' : userID, //'userID'---> firebase e kaydedilecek değerler. userID--> sınıfımızdaki değerler
       'email' : email ?? '',
-      'userName' : userName ?? '',
+      'userName' : userName ??  email.substring(0, email.indexOf('@')) + randomGenerateNumber(),
       'profilURL' : profilURL ?? 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png',
       'createdAt' : createdAt ?? FieldValue.serverTimestamp(),
       'updatedAt' : updatedAt ?? FieldValue.serverTimestamp(),
@@ -46,5 +48,10 @@ class User {
   @override
   String toString() {
     return 'User{userID: $userID, email: $email, userName: $userName, profilURL: $profilURL, createdAt: $createdAt, updatedAt: $updatedAt, level: $level, weight: $weight, height: $height, afterBeforePhoto: $afterBeforePhoto}';
+  }
+//username oluşturulurken uniq olması için yanına koyulan random sayı methodu.
+  String randomGenerateNumber() {
+    int randomNumber = Random().nextInt(999999);
+    return randomNumber.toString();
   }
 }
