@@ -50,8 +50,8 @@ flutter:
   uses-material-design: true
 
 
-  #assets:
-     #- images/bodybuilding.pose.jpeg
+  assets:
+     - Images/
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

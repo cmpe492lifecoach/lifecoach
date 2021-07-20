@@ -68,45 +68,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () {
-        return showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8)),
-                title: Text(
-                  "Close",
-                ),
-                content: Text("Do you want to exit ?"),
-                actions: <Widget>[
-                  RaisedButton(
-                    color: Colors.purpleAccent,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8)),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text("Cancel"),
-                  ),
-                  RaisedButton(
-                    color: Colors.purpleAccent,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8)),
-                    onPressed: () {
-                      if (_timer != null) _timer.cancel();
-                      //advancedPlayer.stop();
-                      exit(0);
-                    },
-                    child: Text("Quit"),
-                  )
-                ],
-              );
-            });
-      },
-      child: SafeArea(
-        child: Scaffold(
+    return Scaffold(
+          appBar: AppBar(title: Text("Body Building"),),
           body: Container(
             height: double.infinity,
             width: double.infinity,
@@ -120,9 +83,7 @@ class _HomePageState extends State<HomePage> {
             ),
             child: exercisePage(),
           ),
-        ),
-      ),
-    );
+        );
   }
 
   Widget exercisePage() => Builder(builder: (context) {
@@ -362,9 +323,9 @@ class _HomePageState extends State<HomePage> {
           height: 50,
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 50, right: 50),
+          padding: const EdgeInsets.only(left: 40, right: 50),
           child: Container(
-            width: 165,
+            width: 190,
             padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
                 border: Border.all(
@@ -390,7 +351,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(top: 30, left: 200, right: 40,bottom: 20),
+          padding: const EdgeInsets.only(top: 30, left: 50, right: 40,bottom: 20),
           child: Container(
             child: RaisedButton(
               padding: EdgeInsets.all(10),

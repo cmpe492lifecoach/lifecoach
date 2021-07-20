@@ -95,9 +95,6 @@ User get user => _user;
       }else return null;
 
 
-    }catch(e){
-      debugPrint("ViewModel SignInWithEmailAndPassword User Error!!!" +e.toString());
-      return null;
     }finally {
       state = ViewState.Idle;
     }

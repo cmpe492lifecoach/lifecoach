@@ -22,7 +22,10 @@ class Repository implements AuthBase{
    if(appMode == AppMode.DEBUG){
       return await _fakeAuthenticationService.currentUser();
    }else {
-     return await _firebaseAuthService.currentUser();
+
+     User _user = await _firebaseAuthService.currentUser();
+     return await _fireStoreDBService.readUser(_user.userID);
+
    }
   }
 
@@ -58,12 +61,10 @@ class Repository implements AuthBase{
     if(appMode == AppMode.DEBUG){
       return await _fakeAuthenticationService.signInWithEmailAndPassword(email, password);
     }else {
-      try{
+
         User _user = await _firebaseAuthService.signInWithEmailAndPassword(email, password);
         return await _fireStoreDBService.readUser(_user.userID);
-      }catch(e){
-        debugPrint("SignInWirhEmailAndPassword Repo Error :" +e.toString());
-      }
+
     }
   }
 

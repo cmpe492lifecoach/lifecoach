@@ -99,6 +99,9 @@ class _WorkoutState extends State<Workout> {
       },
       child: SafeArea(
         child: Scaffold(
+          appBar: AppBar(
+            title: Text("BodyBuildingd"),
+          ),
             body: Column(
               children: <Widget>[
                 Padding(
