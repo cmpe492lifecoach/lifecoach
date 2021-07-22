@@ -5,7 +5,7 @@ class ToDoPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("ToDo"),),
-      body: Center(child: Text("ToDo Page"),),
+      body: Center(child: Text("ToDo Pasge"),),
     );
   }
 }

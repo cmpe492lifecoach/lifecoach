@@ -62,7 +62,9 @@ class Repository implements AuthBase{
         User _user = await _firebaseAuthService.signInWithEmailAndPassword(email, password);
         return await _fireStoreDBService.readUser(_user.userID);
       }catch(e){
-        debugPrint("SignInWirhEmailAndPassword Repo Error :" +e.toString());
+        User _user = await _firebaseAuthService.signInWithEmailAndPassword(email, password);
+        print(_user);
+        debugPrint("SignInWithEmailAndPassword Repo Error :" +e.toString());
       }
     }
   }

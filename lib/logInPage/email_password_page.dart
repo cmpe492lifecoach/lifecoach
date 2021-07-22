@@ -19,6 +19,8 @@ class _EmailAndPasswordPageState extends State<EmailAndPasswordPage> {
   String _buttonText, _linkText;
   var _formType = FormType.LogIn;
   final _formKey = GlobalKey<FormState>();
+
+
   void _formSubmit() async{
     _formKey.currentState.save();
     debugPrint("Email: "+_email + " Password: "+_password);
@@ -106,6 +108,7 @@ if(_userModel.user != null){
                   ),
                   onSaved: (String enterPassword) {
                     _password = enterPassword;
+
                   },
                 ),
                 SizedBox(height: 8,),

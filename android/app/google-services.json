@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "503000124568",
+    "project_id": "life-coach-application",
+    "storage_bucket": "life-coach-application.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:503000124568:android:7b08a3a8401957ee9c14ed",
+        "android_client_info": {
+          "package_name": "com.example.lifecoach_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "503000124568-qp29u0348j2dmuhklatqb61qhilpugmf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwhMPiqLyrzmYkPaNuijS9GR0K6FN4D00"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "503000124568-qp29u0348j2dmuhklatqb61qhilpugmf.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "503000124568-pd8rt3no6b4004b43965d28n3pcj5rgj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.lifecoachApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
