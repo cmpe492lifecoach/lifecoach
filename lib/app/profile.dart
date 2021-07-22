@@ -52,7 +52,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: CircleAvatar(
                   radius: 75,
                   backgroundColor: Colors.black,
-                  backgroundImage: NetworkImage(_userModel.user.profilURL),
+                 // backgroundImage: NetworkImage(_userModel.user.profilURL),
                 ),
               ),
               Padding(
