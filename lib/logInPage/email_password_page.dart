@@ -31,7 +31,12 @@ class _EmailAndPasswordPageState extends State<EmailAndPasswordPage> {
          if(_loginUser != null)
            print("user ıd:" +_loginUser.userID.toString());
        }on PlatformException catch (e){
-         debugPrint("Widget SignIn Error catched :" +e.code.toString());
+         PlatformAlertDialog(
+           header: "Sign In Error",
+           content: Errors.showErrors(e.code),
+           mainButtonText: "Close",
+
+         ).show(context);
        }
     }else {
       try{
@@ -117,7 +122,7 @@ if(_userModel.user != null){
                   buttonColor: Theme
                       .of(context)
                       .primaryColor,
-                  buttonIcon: Icon(Icons.ad_units),
+
                   radius: 10,
                   onPressed: () => _formSubmit(),
                 ),

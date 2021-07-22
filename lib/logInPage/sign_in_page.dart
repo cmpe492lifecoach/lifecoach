@@ -64,16 +64,14 @@ class SignInPage extends StatelessWidget {
               buttonColor: Colors.white,
               textColor: Colors.black,
               //buttonIcon: Image.asset("images/images/icons8-google-48.png", width: 50, height: 50,),
-              buttonIcon: Icon(Icons.outgoing_mail,
-                size: 32,
-                color: Colors.black,),
+
               onPressed: ()=> _googleWithEnter(context),
             ),
             SocialLogInButton(
               buttonText: "Facebook",
               textColor: Colors.white,
               radius: 16,
-              buttonIcon: Image.asset("assets/facebook.png",color: Colors.white,),
+
 
               //buttonIcon: Icon(Icons.outgoing_mail,
               //size: 32,
@@ -84,17 +82,13 @@ class SignInPage extends StatelessWidget {
             SocialLogInButton(
               onPressed: () => _emailPasswordEntry(context),
               buttonText: "Email and Password",
-              buttonIcon: Icon(Icons.email_sharp,
-                size: 32,
-                color: Colors.white,),
+
             ),
             SocialLogInButton(
               onPressed: ()=> _guestEntry(context),
               buttonColor: Colors.cyan,
               buttonText: "Guest Entry",
-              buttonIcon: Icon(Icons.supervised_user_circle,
-                size: 32,
-                color: Colors.white,),
+
             ),
           ],
 

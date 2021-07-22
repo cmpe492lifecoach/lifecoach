@@ -21,9 +21,13 @@ class FirebaseAuthService implements AuthBase {
   }
 
   User _userFromFirebase(FirebaseUser user) { // bu method firebase user ı normal user a dönüştürür.
-    if(user == null)
+    if(user == null){
       return null;
-    return User(userID: user.uid, email: user.email);
+    }else {
+      return User(userID: user.uid, email: user.email);
+    }
+
+
   }
 
   @override
@@ -74,13 +78,10 @@ class FirebaseAuthService implements AuthBase {
 
   @override
   Future<User> signInWithEmailAndPassword(String email, String password) async{
-    try{
+
       AuthResult result = await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
       return _userFromFirebase(result.user);
-    }catch(e){
-      print("Error Sign In" +e.toString());
-      return null;
-    }
+
   }
 
   @override

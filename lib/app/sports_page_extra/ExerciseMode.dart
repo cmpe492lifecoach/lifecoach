@@ -24,43 +24,8 @@ class _ExerciseModeState extends State<ExerciseMode> {
   }
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () {
-        return showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8)),
-                title: Text(
-                  "Close",
-                ),
-                content: Text("Do you want to exit ?"),
-                actions: <Widget>[
-                  RaisedButton(
-                    color: Colors.purpleAccent,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8)),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text("Cancel"),
-                  ),
-                  RaisedButton(
-                    color: Colors.purpleAccent,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8)),
-                    onPressed: () {
-                      exit(0);
-                    },
-                    child: Text("Quit"),
-                  )
-                ],
-              );
-            });
-      },
-      child: SafeArea(
-        child: Scaffold(
+    return Scaffold(
+
           body: Center(
             child: Container(
               child: Column(
@@ -186,9 +151,9 @@ class _ExerciseModeState extends State<ExerciseMode> {
               ),
             ),
           ),
-        ),
-      ),
-    );
+        );
+
+
   }
 
 }
