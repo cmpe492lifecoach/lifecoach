@@ -22,11 +22,12 @@ class CalendarPageState extends State<CalendarPage>
   DatabaseHelper _databaseHelper = DatabaseHelper();
   AnimationController _animationController;
   String saa = 'bos';
+  Color oldColor;
 
   @override
   void initState() {
     getNotes();
-    print('Async done');
+
     _animationController = AnimationController(
       vsync: this,
       duration: new Duration(milliseconds: 5000),
@@ -47,7 +48,7 @@ class CalendarPageState extends State<CalendarPage>
 
   void getNotes() async {
     var notesFuture = _databaseHelper.getAllNotes();
-    print('bura calisiyo');
+
     await notesFuture.then((data) {
       setState(() {
         this.allNotes = data;
@@ -59,7 +60,7 @@ class CalendarPageState extends State<CalendarPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: LightColors.kLightYellow,
+      backgroundColor: LightColors.kLightYellow2,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(
@@ -164,6 +165,31 @@ class CalendarPageState extends State<CalendarPage>
                             scrollDirection: Axis.vertical,
                             itemCount: allNotes.length,
                             itemBuilder: (BuildContext context, int index) {
+                              bool taskDone = false;
+                              randomizeColor() {
+                                var myColor = randomColor();
+                                if (myColor != oldColor) {
+                                  initState() {
+                                    oldColor = myColor;
+                                  }
+
+                                  initState();
+
+                                  return myColor;
+                                } else {
+                                  randomizeColor();
+                                }
+                              }
+
+                              var color = randomizeColor();
+
+                              if (int.parse(allNotes[index].date.substring(6, 10)) < DateTime.now().year) {
+                                taskDone = true;
+                              } else if (!taskDone && int.parse(allNotes[index].date.substring(3, 5)) < DateTime.now().month) {
+                                taskDone = true;
+                              } else taskDone = false;
+
+
                               return Dismissible(
                                 key: UniqueKey(),
                                 child: TaskContainer(
@@ -171,14 +197,19 @@ class CalendarPageState extends State<CalendarPage>
                                   subtitle: allNotes[index].description,
                                   startTime: allNotes[index].startTime,
                                   endTime: allNotes[index].endTime,
-                                  boxColor: LightColors.kLightYellow2,
+                                  icon: taskDone == true
+                                      ? Icons.check
+                                      : Icons.access_time,
+                                  boxColor: color,
                                 ),
                                 confirmDismiss: (direction) async {
                                   if (direction ==
                                       DismissDirection.startToEnd) {
                                     await _databaseHelper
                                         .delete(allNotes[index].id);
-                                    print(index);
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                            content: Text('Task Deleted')));
                                     getNotes();
                                     return true;
                                   } else if (direction ==
@@ -186,8 +217,9 @@ class CalendarPageState extends State<CalendarPage>
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (builder) => EditTask(
+                                            builder: (builder) => EditTaskPage(
                                                   taskID: allNotes[index].id,
+                                                  listID: index,
                                                 )));
                                     return false;
                                   }
@@ -197,7 +229,10 @@ class CalendarPageState extends State<CalendarPage>
                                   margin: EdgeInsets.symmetric(vertical: 15.0),
                                   alignment: Alignment.centerLeft,
                                   padding: EdgeInsets.only(left: 20.0),
-                                  color: Colors.redAccent,
+                                  decoration: BoxDecoration(
+                                      color: Colors.redAccent,
+                                      borderRadius:
+                                          BorderRadius.circular(30.0)),
                                   child:
                                       Icon(Icons.delete, color: Colors.white),
                                 ),
@@ -205,7 +240,10 @@ class CalendarPageState extends State<CalendarPage>
                                   margin: EdgeInsets.symmetric(vertical: 15.0),
                                   alignment: Alignment.centerRight,
                                   padding: EdgeInsets.only(right: 20.0),
-                                  color: Colors.orangeAccent,
+                                  decoration: BoxDecoration(
+                                      color: Colors.orangeAccent,
+                                      borderRadius:
+                                          BorderRadius.circular(30.0)),
                                   child: Icon(Icons.edit, color: Colors.white),
                                 ),
                               );
@@ -230,4 +268,36 @@ class CalendarPageState extends State<CalendarPage>
       ),
     );
   }
+
+  randomColor() {
+    var _random = new math.Random();
+    var _randomNumber = _random.nextInt(4) + 1;
+    switch (_randomNumber) {
+      case 1:
+        return LightColors.kLavender;
+        break;
+      case 2:
+        return LightColors.kPalePink;
+        break;
+      case 3:
+        return LightColors.kGreen;
+        break;
+      case 4:
+        return LightColors.kDarkYellow;
+        break;
+    }
+  }
+
+/* dateComparison(index){
+    if(int.parse(allNotes[index].date.substring(6,10))<DateTime.now().year){
+      print(int.parse(allNotes[index].date.substring(6,10));
+          taskDone=true;
+          }
+          else if(!taskDone&&int.parse(allNotes[index].date.substring(3,5))<DateTime.now().month){
+    taskDone=true;
+    }
+    else if(!taskDone&&int.parse(allNotes[index].date.substring(0,2))<DateTime.now().day){
+    taskDone=true;
+    }
+  }*/
 }

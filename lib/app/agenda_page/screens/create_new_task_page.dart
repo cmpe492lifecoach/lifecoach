@@ -11,7 +11,8 @@ import 'package:lifecoach_app/app/agenda_page/screens/home_page.dart';
 import 'package:lifecoach_app/app/colors/light_colors.dart';
 import 'package:lifecoach_app/app/agenda_page/widgets/back_button.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
+import '../widgets/build_form.dart';
+import 'package:intl/intl.dart';
 class CreateNewTaskPage extends StatefulWidget {
   @override
   _CreateNewTaskPageState createState() => _CreateNewTaskPageState();
@@ -32,12 +33,14 @@ class _CreateNewTaskPageState extends State<CreateNewTaskPage> {
   int clickedNoteID;
   DateTime selectedDate = DateTime.now();
   final myController = TextEditingController();
+  final DateFormat formatter = DateFormat('dd-MM-yyyy');
   String myDate;
 
   @override
   void initState() {
     getNotes();
     print('Async done');
+    myDate = formatter.format(selectedDate);
     super.initState();
   }
 
@@ -56,12 +59,13 @@ class _CreateNewTaskPageState extends State<CreateNewTaskPage> {
     final DateTime picked = await showDatePicker(
       context: context,
       initialDate: selectedDate,
-      firstDate: DateTime(2000),
+      firstDate: DateTime.now(),
       lastDate: DateTime(2023),
     );
     if (picked != null && picked != selectedDate)
       setState(() {
         selectedDate = picked;
+        myDate = formatter.format(selectedDate);
       });
   }
 
@@ -103,7 +107,7 @@ class _CreateNewTaskPageState extends State<CreateNewTaskPage> {
                       Form(
                           key: _formKey,
                           child: Column(children: <Widget>[
-                            buildForm(_controllerTitle, "Başlık"),
+                            BuildMyForm(txtController:_controllerTitle ,str: "Title"),
                           ])),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -133,7 +137,7 @@ class _CreateNewTaskPageState extends State<CreateNewTaskPage> {
 
                                 hintStyle: TextStyle(),
                                 hintText:
-                                    selectedDate.toString().substring(0, 10)),
+                                    myDate),
                           )),
                           IconButton(
                               onPressed: () => _selectDate(context),
@@ -409,7 +413,7 @@ class _CreateNewTaskPageState extends State<CreateNewTaskPage> {
                   SizedBox(height: 20),
                   Form(
                       child: Column(children: <Widget>[
-                    buildForm(_controllerDesc, "Description"),
+                    BuildMyForm(txtController: _controllerDesc ,str: "Description",)
                   ])),
                   SizedBox(height: 20),
                   Container(
@@ -501,26 +505,26 @@ class _CreateNewTaskPageState extends State<CreateNewTaskPage> {
     );
   }
 
-  Widget buildForm(TextEditingController txtController, String str) {
-    return Container(
-        child: TextFormField(
-      autofocus: false,
-      controller: txtController,
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please enter some title';
-        }
-        return null;
-      },
-      decoration: InputDecoration(
-          labelText: str,
-          labelStyle: TextStyle(color: Colors.black45),
-          focusedBorder:
-              UnderlineInputBorder(borderSide: BorderSide(color: Colors.black)),
-          border:
-              UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey))),
-    ));
-  }
+  // Widget buildForm(TextEditingController txtController, String str) {
+  //   return Container(
+  //       child: TextFormField(
+  //     autofocus: false,
+  //     controller: txtController,
+  //     validator: (value) {
+  //       if (value == null || value.isEmpty) {
+  //         return 'Please enter some title';
+  //       }
+  //       return null;
+  //     },
+  //     decoration: InputDecoration(
+  //         labelText: str,
+  //         labelStyle: TextStyle(color: Colors.black45),
+  //         focusedBorder:
+  //             UnderlineInputBorder(borderSide: BorderSide(color: Colors.black)),
+  //         border:
+  //             UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey))),
+  //   ));
+  // }
 
   Widget hourContainer(
       TextEditingController txtController, String str, String limit) {
@@ -577,8 +581,8 @@ class _CreateNewTaskPageState extends State<CreateNewTaskPage> {
 
   void saveObject() {
     if (_formKey.currentState.validate()) {
-      String myDate = selectedDate.toString().substring(0, 10);
-      print(_startTimeShow + _endTimeShow);
+
+
       _addNote(Notes(_controllerTitle.text, _controllerDesc.text, myDate,
           _startTimeShow, _endTimeShow));
     }

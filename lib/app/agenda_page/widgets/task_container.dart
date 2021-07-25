@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-
 class TaskContainer extends StatelessWidget {
   final String title;
   final String subtitle;
   final Color boxColor;
   final String endTime;
   final String startTime;
-  TaskContainer({
-    this.title, this.subtitle, this.boxColor,this.endTime,this.startTime
-  });
+  final IconData icon;
+  bool isTaskDone=false;
+  TaskContainer(
+      {this.title, this.subtitle, this.boxColor, this.endTime, this.startTime,this.icon});
 
   @override
   Widget build(BuildContext context) {
@@ -29,19 +29,38 @@ class TaskContainer extends StatelessWidget {
                 fontWeight: FontWeight.w700,
               ),
             ),
-
-            Padding(
-              padding: const EdgeInsets.only(top: 10.0),
-              child: Text(
-                subtitle,
-                style: TextStyle(
-                  fontSize: 14.0,
-                  color: Colors.black54,
-                  fontWeight: FontWeight.w400,
+            Stack(
+              children:[
+                Padding(
+                padding: const EdgeInsets.only(top: 10.0),
+                child: Text(
+                  subtitle,
+                  style: TextStyle(
+                    fontSize: 14.0,
+                    color: Colors.black54,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
               ),
-            ),
-
+               Container(
+                 alignment: Alignment.centerRight,
+                 child: Icon(
+                    icon
+                 ),
+               ),
+                /*Container(
+                  alignment: Alignment.centerRight,
+                  padding: const EdgeInsets.only(top: 10.0),
+                  child: Text(
+                    '$date',
+                    style: TextStyle(
+                      fontSize: 14.0,
+                      color: Colors.black54,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ),*/
+            ]),
             Padding(
               padding: const EdgeInsets.only(top: 10.0),
               child: Text(
@@ -53,15 +72,28 @@ class TaskContainer extends StatelessWidget {
                 ),
               ),
             ),
+
+
           ],
         ),
         decoration: BoxDecoration(
             color: boxColor,
+            border: Border.all(color: Colors.black12,width: 2),
             borderRadius: BorderRadius.circular(30.0)),
       ),
-      onTap: (){
+      onTap: () {
         print("asdsad");
       },
     );
   }
+  dateComparison(String date){
+    bool keepSearching=true;
+    if(int.parse(date.substring(0,4))>int.parse(DateTime.now().toString().substring(0,4))){
+      isTaskDone=false;
+    }
+    else if(keepSearching&&int.parse(date.substring(4,6))>int.parse(DateTime.now().toString().substring(4,6))){
+      isTaskDone=false;
+    }
+  }
 }
+
