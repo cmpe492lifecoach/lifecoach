@@ -4,7 +4,7 @@ import 'package:lifecoach_app/app/agenda_page/screens/home_page.dart';
 import 'package:lifecoach_app/app/colors/light_colors.dart';
 
 class MyBackButton extends StatelessWidget {
-  bool pushPop=false;
+  int pushPop;
 
  MyBackButton({this.pushPop});
   @override
@@ -13,9 +13,8 @@ class MyBackButton extends StatelessWidget {
       tag: 'backButton',
         child: GestureDetector(
         onTap: (){
-          if (pushPop)Navigator.push(context,MaterialPageRoute(builder: (context)=>CalendarPage()));
-            else Navigator.pop(context);
-         
+          if (pushPop==1)Navigator.push(context,MaterialPageRoute(builder: (context)=>CalendarPage()));
+          if(pushPop==2)Navigator.push(context,MaterialPageRoute(builder: (context)=>AgendaHomePage()));
         },
           child: Align(
           alignment: Alignment.centerLeft,

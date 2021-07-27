@@ -1,7 +1,11 @@
+import 'dart:io';
+
+import 'package:chips_choice/chips_choice.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:lifecoach_app/app/agenda_page/models/notes.dart';
 import 'package:lifecoach_app/app/agenda_page/screens/calendar_page.dart';
 import 'package:lifecoach_app/app/agenda_page/utils/dbHelper.dart';
@@ -13,18 +17,31 @@ import 'package:lifecoach_app/app/agenda_page/widgets/back_button.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../widgets/build_form.dart';
 import 'package:intl/intl.dart';
+
 class CreateNewTaskPage extends StatefulWidget {
   @override
   _CreateNewTaskPageState createState() => _CreateNewTaskPageState();
 }
 
 class _CreateNewTaskPageState extends State<CreateNewTaskPage> {
+  Color pickerColor = Color(0xff443a49);
+  Color currentColor = Color(0xff443a49);
+  int tag = 0;
+  List<String> options = [
+    'Sports',
+    'Education',
+    'Travel',
+    'Food',
+    'Tech',
+    'Science',
+    'Other'
+  ];
   var _endTimeHour = TextEditingController();
   var _startTimeHour = TextEditingController();
   var _startTimeMin = TextEditingController();
   var _endTimeMin = TextEditingController();
-  String _startTimeShow = 'Start Time';
-  String _endTimeShow = 'End Time';
+  String _startTimeShow = '';
+  String _endTimeShow = '';
   DatabaseHelper _databaseHelper = DatabaseHelper();
   List<Notes> allNotes = new List<Notes>();
   var _controllerTitle = TextEditingController();
@@ -35,6 +52,9 @@ class _CreateNewTaskPageState extends State<CreateNewTaskPage> {
   final myController = TextEditingController();
   final DateFormat formatter = DateFormat('dd-MM-yyyy');
   String myDate;
+  bool startBool = false;
+  bool endBool = false;
+  bool checkedValue = false;
 
   @override
   void initState() {
@@ -46,7 +66,6 @@ class _CreateNewTaskPageState extends State<CreateNewTaskPage> {
 
   void getNotes() async {
     var notesFuture = _databaseHelper.getAllNotes();
-    print('bura calisiyo');
     await notesFuture.then((data) {
       setState(() {
         this.allNotes = data;
@@ -72,20 +91,18 @@ class _CreateNewTaskPageState extends State<CreateNewTaskPage> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    var downwardIcon = Icon(
-      Icons.keyboard_arrow_down,
-      color: Colors.black54,
-    );
     return Scaffold(
       body: SafeArea(
         child: Column(
           children: <Widget>[
             TopContainer(
-              padding: EdgeInsets.fromLTRB(20, 20, 20, 40),
+              padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
               width: width,
               child: Column(
                 children: <Widget>[
-                  MyBackButton(pushPop: true,),
+                  MyBackButton(
+                    pushPop: 1,
+                  ),
                   SizedBox(
                     height: 30,
                   ),
@@ -107,7 +124,8 @@ class _CreateNewTaskPageState extends State<CreateNewTaskPage> {
                       Form(
                           key: _formKey,
                           child: Column(children: <Widget>[
-                            BuildMyForm(txtController:_controllerTitle ,str: "Title"),
+                            BuildMyForm(
+                                txtController: _controllerTitle , str: "Title"),
                           ])),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -118,10 +136,10 @@ class _CreateNewTaskPageState extends State<CreateNewTaskPage> {
                               textAlign: TextAlign.center,
                               decoration: InputDecoration(
                                 hintText: "Date",
-                                border:
-                                UnderlineInputBorder(borderSide: BorderSide(color: Colors.black12)),
+                                border: UnderlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: Colors.black12)),
                                 enabled: false,
-
                               ),
                             ),
                             width: 45,
@@ -132,12 +150,11 @@ class _CreateNewTaskPageState extends State<CreateNewTaskPage> {
                             onTap: () => _selectDate(context),
                             showCursor: false,
                             decoration: InputDecoration(
-                                focusedBorder:
-                                UnderlineInputBorder(borderSide: BorderSide(color: Colors.black12)),
-
+                                focusedBorder: UnderlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: Colors.black12)),
                                 hintStyle: TextStyle(),
-                                hintText:
-                                    myDate),
+                                hintText: myDate),
                           )),
                           IconButton(
                               onPressed: () => _selectDate(context),
@@ -145,358 +162,250 @@ class _CreateNewTaskPageState extends State<CreateNewTaskPage> {
                         ],
                       )
                     ],
-                  ))
+                  )),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: SizedBox(
+                      width: 150,
+                      child: CheckboxListTile(
+                        title: Text("Select Times"),
+                        value: checkedValue,
+                        onChanged: (newValue) {
+                          setState(() {
+                            checkedValue = newValue;
+                          });
+                        },
+                        controlAffinity: ListTileControlAffinity
+                            .leading, //  <-- leading Checkbox
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),
             Expanded(
                 child: SingleChildScrollView(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-              child: Column(
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Container(
-                        child: TextField(
-                          enabled: false,
-                          decoration: new InputDecoration(
-                            border: InputBorder.none,
-                            focusedBorder: InputBorder.none,
-                            enabledBorder: InputBorder.none,
-                            errorBorder: InputBorder.none,
-                            disabledBorder: InputBorder.none,
-                            contentPadding: EdgeInsets.all(10),
-                            hintText: _startTimeShow,
-                            hintStyle: TextStyle(
-                              color: Colors.black,
-                              fontSize: 18,
-                            ),
+
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    checkedValue
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: <Widget>[
+                              Platform.isIOS
+                                  ? GestureDetector(
+                                      child: Text("basd"),
+                                    )
+                                  : GestureDetector(
+                                      child: Material(
+                                        borderRadius: BorderRadius.circular(11),
+                                        elevation: 15,
+                                        child: Container(
+                                          child: Text(
+                                            _startTimeShow == ''
+                                                ? "Start Time"
+                                                : "Start Time : $_startTimeShow",
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w400,
+                                                fontFamily: ''),
+                                          ),
+                                          padding: EdgeInsets.all(15),
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color: Colors.black38,
+                                                  width: 2),
+                                              borderRadius:
+                                                  BorderRadius.circular(11)),
+                                        ),
+                                      ),
+                                      onTap: () {
+                                        setState(() {
+                                          startBool = true;
+                                        });
+                                        _timePickerForAndroid();
+                                      }),
+                              Platform.isIOS
+                                  ? GestureDetector(
+                                      child: Text("basd"),
+                                    )
+                                  : GestureDetector(
+                                      child: Material(
+                                        elevation: 15,
+                                        borderRadius: BorderRadius.circular(11),
+                                        child: Container(
+                                          child: Text(
+                                            _endTimeShow == ''
+                                                ? "End Time"
+                                                : "End Time : $_endTimeShow",
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w400,
+                                                fontFamily: ''),
+                                          ),
+                                          padding: EdgeInsets.all(15),
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color: Colors.black38,
+                                                  width: 2),
+                                              borderRadius:
+                                                  BorderRadius.circular(11)),
+                                        ),
+                                      ),
+                                      onTap: () {
+                                        setState(() {
+                                          endBool = true;
+                                        });
+                                        _timePickerForAndroid();
+                                      }),
+                            ],
+                          )
+                        : SizedBox(
+                            height: 0,
                           ),
-                          textAlign: TextAlign.center,
-                        ),
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Colors.blueAccent,
-                              width: 2.0,
-                            ),
-                            borderRadius: BorderRadius.circular(7)),
-                        alignment: Alignment.center,
-                        width: 150,
-                        height: 40,
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  content: Column(
-                                    children: <Widget>[
-                                      Container(
-                                        child: Text(
-                                          'Select a Time',
-                                          textAlign: TextAlign.start,
-                                          style: (TextStyle(
-                                            fontSize: 15.0,
-                                          )),
-                                        ),
-                                        margin: EdgeInsets.only(bottom: 10),
-                                        alignment: Alignment.centerLeft,
-                                      ),
-                                      Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          hourContainer(
-                                              _startTimeHour, "hour", "24"),
-                                          Container(
-                                            child: Text(
-                                              ':',
-                                              textAlign: TextAlign.center,
-                                              style: (TextStyle(
-                                                  fontSize: 30.0,
-                                                  fontWeight: FontWeight.w700)),
-                                            ),
-                                            width: 30,
-                                          ),
-                                          hourContainer(
-                                              _startTimeMin, "min", "59")
-                                        ],
-                                      ),
-                                      Container(
-                                        child: TextButton(
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 10.0, right: 10.0),
-                                            child: Text('OK',
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 14,
-                                                    fontWeight:
-                                                        FontWeight.w500)),
-                                          ),
-                                          style: TextButton.styleFrom(
-                                            primary: Colors.teal,
-                                            onSurface: Colors.yellow,
-                                            side: BorderSide(
-                                                color: Colors.teal, width: 2),
-                                            shape: const RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(25))),
-                                          ),
-                                          onPressed: () {
-                                            if (_startTimeHour.text == '') {
-                                              Fluttertoast.showToast(
-                                                  msg: "Enter a Hour",
-                                                  toastLength:
-                                                      Toast.LENGTH_SHORT,
-                                                  gravity:
-                                                      ToastGravity.CENTER_RIGHT,
-                                                  timeInSecForIosWeb: 1,
-                                                  backgroundColor: Colors.red,
-                                                  textColor: Colors.white,
-                                                  fontSize: 16.0);
-                                            } else if (_startTimeMin.text ==
-                                                '') {
-                                              _startTimeMin.text = '00';
-                                              Navigator.pop(context);
-                                            } else {
-                                              Navigator.pop(context);
-                                            }
-                                            _startTimeShow =
-                                                _startTimeHour.text +
-                                                    ":" +
-                                                    _startTimeMin.text;
-                                          },
-                                        ),
-                                        margin: EdgeInsets.only(top: 5),
-                                        alignment: Alignment.centerRight,
-                                      )
-                                    ],
-                                    mainAxisSize: MainAxisSize.min,
-                                  ),
-                                );
-                              });
-                        },
-                        icon: Icon(Icons.access_time_rounded),
-                      ),
-                      SizedBox(width: 20),
-                      Container(
-                        child: TextField(
-                          enabled: false,
-                          decoration: new InputDecoration(
-                            border: InputBorder.none,
-                            focusedBorder: InputBorder.none,
-                            enabledBorder: InputBorder.none,
-                            errorBorder: InputBorder.none,
-                            disabledBorder: InputBorder.none,
-                            contentPadding: EdgeInsets.all(10),
-                            hintText: _endTimeShow,
-                            hintStyle: TextStyle(
-                              color: Colors.black,
-                              fontSize: 18,
-                            ),
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Colors.blueAccent,
-                              width: 2.0,
-                            ),
-                            borderRadius: BorderRadius.circular(7)),
-                        alignment: Alignment.center,
-                        width: 150,
-                        height: 40,
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  content: Column(
-                                    children: <Widget>[
-                                      Container(
-                                        child: Text(
-                                          'Select a Time',
-                                          textAlign: TextAlign.start,
-                                          style: (TextStyle(
-                                            fontSize: 15.0,
-                                          )),
-                                        ),
-                                        margin: EdgeInsets.only(bottom: 10),
-                                        alignment: Alignment.centerLeft,
-                                      ),
-                                      Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          hourContainer(
-                                              _endTimeHour, "hour", "24"),
-                                          Container(
-                                            child: Text(
-                                              ':',
-                                              textAlign: TextAlign.center,
-                                              style: (TextStyle(
-                                                  fontSize: 30.0,
-                                                  fontWeight: FontWeight.w700)),
-                                            ),
-                                            width: 30,
-                                          ),
-                                          hourContainer(
-                                              _endTimeMin, "min", "59")
-                                        ],
-                                      ),
-                                      Container(
-                                        child: TextButton(
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 10.0, right: 10.0),
-                                            child: Text('OK',
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 14,
-                                                    fontWeight:
-                                                        FontWeight.w500)),
-                                          ),
-                                          style: TextButton.styleFrom(
-                                            primary: Colors.teal,
-                                            onSurface: Colors.yellow,
-                                            side: BorderSide(
-                                                color: Colors.teal, width: 2),
-                                            shape: const RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(25))),
-                                          ),
-                                          onPressed: () {
-                                            if (_endTimeHour.text == '') {
-                                              Fluttertoast.showToast(
-                                                  msg: "Enter a Hour",
-                                                  toastLength:
-                                                      Toast.LENGTH_SHORT,
-                                                  gravity:
-                                                      ToastGravity.CENTER_RIGHT,
-                                                  timeInSecForIosWeb: 1,
-                                                  backgroundColor: Colors.red,
-                                                  textColor: Colors.white,
-                                                  fontSize: 16.0);
-                                            } else if (_endTimeMin.text == '') {
-                                              _endTimeMin.text = '00';
-                                              Navigator.pop(context);
-                                            } else {
-                                              Navigator.pop(context);
-                                            }
-                                            _endTimeShow = _endTimeHour.text +
-                                                ":" +
-                                                _endTimeMin.text;
-                                          },
-                                        ),
-                                        margin: EdgeInsets.only(top: 5),
-                                        alignment: Alignment.centerRight,
-                                      )
-                                    ],
-                                    mainAxisSize: MainAxisSize.min,
-                                  ),
-                                );
-                              });
-                        },
-                        icon: Icon(Icons.access_time_rounded),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 20),
-                  Form(
-                      child: Column(children: <Widget>[
-                    BuildMyForm(txtController: _controllerDesc ,str: "Description",)
-                  ])),
-                  SizedBox(height: 20),
-                  Container(
-                    alignment: Alignment.topLeft,
-                    child: Column(
+                    SizedBox(height: 10,),
+                    Form(
+                        child: Column(
+                            children: <Widget>[
+                      BuildMyForm(
+                        txtController: _controllerDesc,
+                        str: "Description",
+                      )
+                    ])),
+                    SizedBox(height: 20),
+
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          'Category',
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.black54,
+                      children: [
+                        Container(
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              "Category",
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.black54,
+                              ),
+                            )),
+                        ChipsChoice<int>.single(
+                          wrapped: true,
+                          choiceStyle: C2ChoiceStyle(borderWidth: 2),
+                          value: tag,
+                          onChanged: (val) => setState(() => tag = val),
+                          choiceItems: C2Choice.listFrom<int, String>(
+                            source: options,
+                            value: (i, v) => i,
+                            label: (i, v) => v,
                           ),
-                        ),
-                        Wrap(
-                          crossAxisAlignment: WrapCrossAlignment.start,
-                          //direction: Axis.vertical,
-                          alignment: WrapAlignment.start,
-                          verticalDirection: VerticalDirection.down,
-                          runSpacing: 0,
-                          //textDirection: TextDirection.rtl,
-                          spacing: 10.0,
-                          children: <Widget>[
-                            Chip(
-                              label: Text("SPORT APP"),
-                              backgroundColor: LightColors.kRed,
-                              labelStyle: TextStyle(color: Colors.white),
-                            ),
-                            Chip(
-                              label: Text("MEDICAL APP"),
-                            ),
-                            Chip(
-                              label: Text("RENT APP"),
-                            ),
-                            Chip(
-                              label: Text("NOTES"),
-                            ),
-                            Chip(
-                              label: Text("GAMING PLATFORM APP"),
-                            ),
-                          ],
                         ),
                       ],
                     ),
-                  )
-                ],
+
+                    Row(
+                      children: [
+                        GestureDetector(
+                           child: Container(
+                             margin: EdgeInsets.only(top: 15),
+                             width: 150,
+                                alignment: Alignment.centerLeft,
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.black38,width: 2),
+                                  borderRadius: BorderRadius.circular(11)
+                                ),
+                                padding: EdgeInsets.all(10),
+                                child: Text(
+                                  "Select Task Color",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.black,
+                                  ),
+                                )
+                           ),
+                            onTap: (){
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                titlePadding: const EdgeInsets.all(0.0),
+                                contentPadding: const EdgeInsets.all(0.0),
+                                content: SingleChildScrollView(
+                                  child: ColorPicker(
+                                    pickerColor: currentColor,
+                                    onColorChanged: changeColor,
+                                    colorPickerWidth: 300.0,
+                                    pickerAreaHeightPercent: 0.7,
+                                    enableAlpha: true,
+                                    displayThumbColor: true,
+                                    showLabel: true,
+                                    paletteType: PaletteType.hsv,
+                                    pickerAreaBorderRadius: const BorderRadius.only(
+                                      topLeft: const Radius.circular(2.0),
+                                      topRight: const Radius.circular(2.0),
+                                    ),
+                                  ),
+                                ),
+                                actions: <Widget>[
+                                  FlatButton(
+                                    child: const Text('Got it'),
+                                    onPressed: () {
+                                      setState(() => currentColor = pickerColor);
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        }),
+                        Container(
+                          margin: EdgeInsets.only(left: 20,top: 15),
+                          width: 30,
+                          height: 30,
+                          decoration: BoxDecoration(
+                            color: currentColor,
+                            shape: BoxShape.circle,
+                            border:Border.all(color: Colors.black12,width: 2)
+                          ),
+                        )
+                      ],
+                    ),
+                    GestureDetector(child: Text("bas") ,onTap: ()=>print(currentColor.toString().substring(6,16)),)
+                  ],
+                ),
               ),
             )),
             Container(
-              width: width,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Container(
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: MaterialButton(
-                        onPressed: () {
-                          if (_formKey.currentState.validate()) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text('Task Saved')));
-                            saveObject();
-                            Navigator.push(context,MaterialPageRoute(builder: (context)=>CalendarPage()));
-                          }
-                        },
-                        child: Text(
-                          'Create Task',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 18),
-                        ),
-                      ),
-                    ),
-                    alignment: Alignment.center,
-                    margin: EdgeInsets.fromLTRB(20, 10, 20, 20),
-                    width: width - 40,
-                    decoration: BoxDecoration(
-                      color: LightColors.kBlue,
-                      borderRadius: BorderRadius.circular(30),
-                    ),
+              alignment: Alignment.bottomCenter,
+              child: SizedBox(
+                width: double.infinity,
+                child: MaterialButton(
+                  onPressed: () {
+                    if (_formKey.currentState.validate()) {
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(SnackBar(content: Text('Task Saved')));
+                      saveObject();
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CalendarPage()));
+                    }
+                  },
+                  child: Text(
+                    'Create Task',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 18),
                   ),
-                ],
+                ),
+              ),
+              margin: EdgeInsets.fromLTRB(20, 10, 20, 20),
+              width: width - 40,
+              decoration: BoxDecoration(
+                color: LightColors.kBlue,
+                borderRadius: BorderRadius.circular(30),
               ),
             ),
           ],
@@ -526,6 +435,59 @@ class _CreateNewTaskPageState extends State<CreateNewTaskPage> {
   //   ));
   // }
 
+  _timePickerForAndroid() async {
+    final TimeOfDay newTime = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay(hour: 7, minute: 15),
+      builder: (BuildContext context, Widget child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+          child: child,
+        );
+      },
+    );
+    if (newTime != null) {
+      setState(() {
+        if (startBool) {
+          _startTimeShow = "${newTime.hour}:${newTime.minute}";
+          if (newTime.hour.toString().length < 2)
+            _startTimeShow = "0${newTime.hour}:${newTime.minute}";
+          if (newTime.minute.toString().length < 2)
+            _startTimeShow = "${newTime.hour}:0${newTime.minute}";
+          if (newTime.minute.toString().length < 2 &&
+              newTime.hour.toString().length < 2)
+            _startTimeShow = "0${newTime.hour}:0${newTime.minute}";
+        }
+        if (endBool) {
+          _endTimeShow = "${newTime.hour}:${newTime.minute}";
+          if (newTime.hour.toString().length < 2)
+            _endTimeShow = "0${newTime.hour}:${newTime.minute}";
+          if (newTime.minute.toString().length < 2)
+            _endTimeShow = "${newTime.hour}:0${newTime.minute}";
+          if (newTime.minute.toString().length < 2 &&
+              newTime.hour.toString().length < 2)
+            _endTimeShow = "0${newTime.hour}:0${newTime.minute}";
+        }
+        startBool = false;
+        endBool = false;
+      });
+    }
+  }
+
+  void changeColor(Color color) {
+    setState(() => pickerColor = color);
+  }
+
+  /* Widget timePicker() {
+   SizedBox(
+          child: CupertinoDatePicker(
+        initialDateTime: DateTime.now(),
+        mode: CupertinoDatePickerMode.time,
+        use24hFormat: true,
+        onDateTimeChanged: (dateTime) =>
+            setState(() => _startTimeShow = dateTime.toString()),
+      ));
+}*/
   Widget hourContainer(
       TextEditingController txtController, String str, String limit) {
     return Container(
@@ -581,10 +543,8 @@ class _CreateNewTaskPageState extends State<CreateNewTaskPage> {
 
   void saveObject() {
     if (_formKey.currentState.validate()) {
-
-
       _addNote(Notes(_controllerTitle.text, _controllerDesc.text, myDate,
-          _startTimeShow, _endTimeShow));
+          _startTimeShow, _endTimeShow, options[tag],currentColor.toString()));
     }
   }
 

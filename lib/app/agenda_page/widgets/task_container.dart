@@ -7,9 +7,11 @@ class TaskContainer extends StatelessWidget {
   final String endTime;
   final String startTime;
   final IconData icon;
+  final Color color;
+  final String category;
   bool isTaskDone=false;
   TaskContainer(
-      {this.title, this.subtitle, this.boxColor, this.endTime, this.startTime,this.icon});
+      {this.title, this.subtitle, this.boxColor, this.endTime, this.startTime,this.icon,this.category,this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +39,7 @@ class TaskContainer extends StatelessWidget {
                   subtitle,
                   style: TextStyle(
                     fontSize: 14.0,
-                    color: Colors.black54,
+                    color: Colors.black,
                     fontWeight: FontWeight.w400,
                   ),
                 ),
@@ -77,7 +79,7 @@ class TaskContainer extends StatelessWidget {
           ],
         ),
         decoration: BoxDecoration(
-            color: boxColor,
+            color: color,
             border: Border.all(color: Colors.black12,width: 2),
             borderRadius: BorderRadius.circular(30.0)),
       ),
