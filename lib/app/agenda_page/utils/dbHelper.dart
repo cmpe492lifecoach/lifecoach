@@ -16,6 +16,8 @@ class DatabaseHelper {
   String _columnDate="date";
   String _columnStartTime="startTime";
   String _columnEndTime="endTime";
+  String _columnCategory="category";
+  String _columnColor="color";
   User _user;
   String tableName;
   bool databaseacildi=false;
@@ -30,21 +32,21 @@ class DatabaseHelper {
   }
 
   Future<Database> initializeDatabase() async {
-    String dbPath = join(await getDatabasesPath(), "mytasks.db");
+    String dbPath = join(await getDatabasesPath(), "mytasks2.db");
     var notesDb = await openDatabase(dbPath, version: 1, onCreate: createDb);
     return notesDb;
   }
 
   void createDb(Database db, int version) async {
     await db.execute(
-        "Create table $tableName($_columnID integer primary key, $_columnTitle text, $_columnDescription text,$_columnDate text,$_columnStartTime text,$_columnEndTime text)");
+        "Create table $tableName($_columnID integer primary key, $_columnTitle text, $_columnDescription text,$_columnDate text,$_columnStartTime text,$_columnEndTime text,$_columnCategory text,$_columnColor text)");
   }
 
   //Crud Methods
   Future<List<Notes>> getAllNotes() async {
     Database db = await this.database;
       await db.execute(
-          "Create table if not exists $tableName($_columnID integer primary key, $_columnTitle text, $_columnDescription text,$_columnDate text,$_columnStartTime text,$_columnEndTime text)");
+          "Create table if not exists $tableName($_columnID integer primary key, $_columnTitle text, $_columnDescription text,$_columnDate text,$_columnStartTime text,$_columnEndTime text,$_columnCategory text,$_columnColor text)");
       var result2 = await db.query("$tableName");
       return List.generate(result2.length, (i) {
         return Notes.fromMap(result2[i]);

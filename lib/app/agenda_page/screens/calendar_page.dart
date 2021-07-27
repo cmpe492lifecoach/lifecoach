@@ -60,7 +60,7 @@ class CalendarPageState extends State<CalendarPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: LightColors.kLightYellow2,
+
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(
@@ -72,7 +72,7 @@ class CalendarPageState extends State<CalendarPage>
           child: Column(
             children: <Widget>[
               MyBackButton(
-                pushPop: false,
+                pushPop: 2,
               ),
               SizedBox(height: 30.0),
               Row(
@@ -197,6 +197,8 @@ class CalendarPageState extends State<CalendarPage>
                                   subtitle: allNotes[index].description,
                                   startTime: allNotes[index].startTime,
                                   endTime: allNotes[index].endTime,
+                                  category: allNotes[index].category,
+                                  color:Color(int.parse("0x7a${allNotes[index].color.toString().substring(10,16)}")),
                                   icon: taskDone == true
                                       ? Icons.check
                                       : Icons.access_time,
@@ -260,6 +262,7 @@ class CalendarPageState extends State<CalendarPage>
                     for (int i = 0; i < allNotes.length; i++) {
                       print(allNotes[i].toMap());
                     }
+
                   },
                   child: Text(allNotes.length.toString()))
             ],
