@@ -34,4 +34,10 @@ class FireStoreDBService implements DataBase {
     return _readUserObject;
   }
 
+  @override
+  Future<bool> updateUserName(String userID, String newUserName) {
+    // TODO: implement updateUserName
+    throw UnimplementedError();
+  }
+
 }
