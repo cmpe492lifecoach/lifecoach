@@ -195,37 +195,27 @@ class _CreateNewTaskPageState extends State<CreateNewTaskPage> {
                         ? Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: <Widget>[
-                              !Platform.isIOS
-                                  ? GestureDetector(
-                                      child: Material(
-                                        borderRadius: BorderRadius.circular(11),
-                                        elevation: 15,
-                                        child: Container(
-                                          child: Text(
-                                            _startTimeShow == ''
-                                                ? "Start Time"
-                                                : "Start Time : $_startTimeShow",
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w400,
-                                                fontFamily: ''),
-                                          ),
-                                          padding: EdgeInsets.all(15),
-                                          decoration: BoxDecoration(
-                                              border: Border.all(
-                                                  color: Colors.black38,
-                                                  width: 2),
-                                              borderRadius:
-                                                  BorderRadius.circular(11)),
-                                        ),
+                              Platform.isIOS
+                                  ?   Column(
+                                    children: [
+                                      Text("Start Time"),
+                                      Container(
+                                        margin: EdgeInsets.only(top: 10),
+                                        width: 100,
+                                        child: SizedBox(
+                  height: 100,
+                  child: CupertinoDatePicker(
+                      initialDateTime: DateTime.now(),
+                      mode: CupertinoDatePickerMode.time,
+                      use24hFormat: true,
+                      onDateTimeChanged: (dateTime) => setState(() {
+                          _startTimeShow = newFormatter.format(dateTime);
+
+                      })),
+                ),
                                       ),
-                                      onTap: () {
-                                        setState(() {
-                                          startBool = true;
-                                        });
-                                        timePicker();
-                                      },
-                                    )
+                                    ],
+                                  )
                                   : GestureDetector(
                                       child: Material(
                                         borderRadius: BorderRadius.circular(11),
@@ -257,7 +247,26 @@ class _CreateNewTaskPageState extends State<CreateNewTaskPage> {
                                       }),
                               Platform.isIOS
                                   ? GestureDetector(
-                                      child: Text("basd"),
+                                      child: Column(
+                                        children: [
+                                          Text("End Time"),
+                                          Container(
+                                            margin: EdgeInsets.only(top: 10),
+                                            width: 100,
+                                            child: SizedBox(
+                                              height: 100,
+                                              child: CupertinoDatePicker(
+                                                  initialDateTime: DateTime.now(),
+                                                  mode: CupertinoDatePickerMode.time,
+                                                  use24hFormat: true,
+                                                  onDateTimeChanged: (dateTime) => setState(() {
+                                                    _endTimeShow = newFormatter.format(dateTime);
+
+                                                  })),
+                                            ),
+                                          ),
+                                        ],
+                                      )
                                     )
                                   : GestureDetector(
                                       child: Material(
@@ -510,7 +519,7 @@ class _CreateNewTaskPageState extends State<CreateNewTaskPage> {
     setState(() => pickerColor = color);
   }
 
-  Widget timePicker() {
+   Widget timePicker() {
     SizedBox(
       height: 100,
       child: CupertinoDatePicker(
