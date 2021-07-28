@@ -4,7 +4,6 @@ import 'package:lifecoach_app/app/agenda_page/models/notes.dart';
 import 'package:lifecoach_app/app/agenda_page/screens/edit_task.dart';
 import 'package:lifecoach_app/app/agenda_page/utils/dbHelper.dart';
 import 'package:lifecoach_app/app/colors/light_colors.dart';
-import 'package:lifecoach_app/app/agenda_page/widgets/calendar_dates.dart';
 import 'package:lifecoach_app/app/agenda_page/widgets/task_container.dart';
 import 'package:lifecoach_app/app/agenda_page/screens/create_new_task_page.dart';
 import 'package:lifecoach_app/app/agenda_page/widgets/back_button.dart';
@@ -20,20 +19,32 @@ class CalendarPageState extends State<CalendarPage>
   List<bool> isSelected = List.generate(1, (_) => false);
   List<Notes> allNotes = new List<Notes>();
   DatabaseHelper _databaseHelper = DatabaseHelper();
-  AnimationController _animationController;
-  String saa = 'bos';
+  AnimationController controller;
+  Animation<double> animation;
+  String saa = 'Tasks';
   Color oldColor;
 
   @override
   void initState() {
     getNotes();
 
-    _animationController = AnimationController(
+    controller = AnimationController(
+      duration: Duration(seconds: 1),
       vsync: this,
-      duration: new Duration(milliseconds: 5000),
     );
 
+    animation = CurvedAnimation(
+      parent: controller,
+      curve: Curves.easeInOutCubic,
+    ).drive(Tween(begin: 0, end: 2));
+
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 
   void _handleOnPressed() {
@@ -60,7 +71,6 @@ class CalendarPageState extends State<CalendarPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(
@@ -127,23 +137,22 @@ class CalendarPageState extends State<CalendarPage>
               ),
               SizedBox(height: 30),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'April, 2020',
-                      style:
-                          TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
-                    ),
+                  Text(
+                    'April, 2020',
+                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
                   ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: GestureDetector(
-                      child: RotationTransition(
-                        child: Icon(Icons.refresh),
-                        turns: _animationController,
-                      ),
-                      onTap: () => _handleOnPressed(),
+                  GestureDetector(
+                    onTap: () {
+                      controller
+                        ..reset()
+                        ..forward();
+                      getNotes();
+                    },
+                    child: RotationTransition(
+                      turns: animation,
+                      child: Icon(Icons.refresh_outlined),
                     ),
                   ),
                 ],
@@ -183,12 +192,18 @@ class CalendarPageState extends State<CalendarPage>
 
                               var color = randomizeColor();
 
-                              if (int.parse(allNotes[index].date.substring(6, 10)) < DateTime.now().year) {
+                              if (int.parse(
+                                      allNotes[index].date.substring(6, 10)) <
+                                  DateTime.now().year) {
                                 taskDone = true;
-                              } else if (!taskDone && int.parse(allNotes[index].date.substring(3, 5)) < DateTime.now().month) {
+                              } else if (!taskDone &&
+                                  int.parse(allNotes[index]
+                                          .date
+                                          .substring(3, 5)) <
+                                      DateTime.now().month) {
                                 taskDone = true;
-                              } else taskDone = false;
-
+                              } else
+                                taskDone = false;
 
                               return Dismissible(
                                 key: UniqueKey(),
@@ -198,7 +213,8 @@ class CalendarPageState extends State<CalendarPage>
                                   startTime: allNotes[index].startTime,
                                   endTime: allNotes[index].endTime,
                                   category: allNotes[index].category,
-                                  color:Color(int.parse("0x7a${allNotes[index].color.toString().substring(10,16)}")),
+                                  color: Color(int.parse(
+                                      "0x7a${allNotes[index].color.toString().substring(10, 16)}")),
                                   icon: taskDone == true
                                       ? Icons.check
                                       : Icons.access_time,
@@ -262,7 +278,6 @@ class CalendarPageState extends State<CalendarPage>
                     for (int i = 0; i < allNotes.length; i++) {
                       print(allNotes[i].toMap());
                     }
-
                   },
                   child: Text(allNotes.length.toString()))
             ],

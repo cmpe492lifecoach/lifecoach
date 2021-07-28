@@ -24,6 +24,7 @@ class CreateNewTaskPage extends StatefulWidget {
 }
 
 class _CreateNewTaskPageState extends State<CreateNewTaskPage> {
+  DateFormat newFormatter = DateFormat('HH-mm');
   Color pickerColor = Color(0xff443a49);
   Color currentColor = Color(0xff443a49);
   int tag = 0;
@@ -125,7 +126,7 @@ class _CreateNewTaskPageState extends State<CreateNewTaskPage> {
                           key: _formKey,
                           child: Column(children: <Widget>[
                             BuildMyForm(
-                                txtController: _controllerTitle , str: "Title"),
+                                txtController: _controllerTitle, str: "Title"),
                           ])),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -185,7 +186,6 @@ class _CreateNewTaskPageState extends State<CreateNewTaskPage> {
             ),
             Expanded(
                 child: SingleChildScrollView(
-
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                 child: Column(
@@ -195,9 +195,36 @@ class _CreateNewTaskPageState extends State<CreateNewTaskPage> {
                         ? Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: <Widget>[
-                              Platform.isIOS
+                              !Platform.isIOS
                                   ? GestureDetector(
-                                      child: Text("basd"),
+                                      child: Material(
+                                        borderRadius: BorderRadius.circular(11),
+                                        elevation: 15,
+                                        child: Container(
+                                          child: Text(
+                                            _startTimeShow == ''
+                                                ? "Start Time"
+                                                : "Start Time : $_startTimeShow",
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w400,
+                                                fontFamily: ''),
+                                          ),
+                                          padding: EdgeInsets.all(15),
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color: Colors.black38,
+                                                  width: 2),
+                                              borderRadius:
+                                                  BorderRadius.circular(11)),
+                                        ),
+                                      ),
+                                      onTap: () {
+                                        setState(() {
+                                          startBool = true;
+                                        });
+                                        timePicker();
+                                      },
                                     )
                                   : GestureDetector(
                                       child: Material(
@@ -266,17 +293,17 @@ class _CreateNewTaskPageState extends State<CreateNewTaskPage> {
                         : SizedBox(
                             height: 0,
                           ),
-                    SizedBox(height: 10,),
+                    SizedBox(
+                      height: 10,
+                    ),
                     Form(
-                        child: Column(
-                            children: <Widget>[
+                        child: Column(children: <Widget>[
                       BuildMyForm(
                         txtController: _controllerDesc,
                         str: "Description",
                       )
                     ])),
                     SizedBox(height: 20),
-
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -302,18 +329,17 @@ class _CreateNewTaskPageState extends State<CreateNewTaskPage> {
                         ),
                       ],
                     ),
-
                     Row(
                       children: [
                         GestureDetector(
-                           child: Container(
-                             margin: EdgeInsets.only(top: 15),
-                             width: 150,
+                            child: Container(
+                                margin: EdgeInsets.only(top: 15),
+                                width: 150,
                                 alignment: Alignment.centerLeft,
                                 decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.black38,width: 2),
-                                  borderRadius: BorderRadius.circular(11)
-                                ),
+                                    border: Border.all(
+                                        color: Colors.black38, width: 2),
+                                    borderRadius: BorderRadius.circular(11)),
                                 padding: EdgeInsets.all(10),
                                 child: Text(
                                   "Select Task Color",
@@ -321,57 +347,62 @@ class _CreateNewTaskPageState extends State<CreateNewTaskPage> {
                                     fontSize: 16,
                                     color: Colors.black,
                                   ),
-                                )
-                           ),
-                            onTap: (){
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                titlePadding: const EdgeInsets.all(0.0),
-                                contentPadding: const EdgeInsets.all(0.0),
-                                content: SingleChildScrollView(
-                                  child: ColorPicker(
-                                    pickerColor: currentColor,
-                                    onColorChanged: changeColor,
-                                    colorPickerWidth: 300.0,
-                                    pickerAreaHeightPercent: 0.7,
-                                    enableAlpha: true,
-                                    displayThumbColor: true,
-                                    showLabel: true,
-                                    paletteType: PaletteType.hsv,
-                                    pickerAreaBorderRadius: const BorderRadius.only(
-                                      topLeft: const Radius.circular(2.0),
-                                      topRight: const Radius.circular(2.0),
+                                )),
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    titlePadding: const EdgeInsets.all(0.0),
+                                    contentPadding: const EdgeInsets.all(0.0),
+                                    content: SingleChildScrollView(
+                                      child: ColorPicker(
+                                        pickerColor: currentColor,
+                                        onColorChanged: changeColor,
+                                        colorPickerWidth: 300.0,
+                                        pickerAreaHeightPercent: 0.7,
+                                        enableAlpha: true,
+                                        displayThumbColor: true,
+                                        showLabel: true,
+                                        paletteType: PaletteType.hsv,
+                                        pickerAreaBorderRadius:
+                                            const BorderRadius.only(
+                                          topLeft: const Radius.circular(2.0),
+                                          topRight: const Radius.circular(2.0),
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ),
-                                actions: <Widget>[
-                                  FlatButton(
-                                    child: const Text('Got it'),
-                                    onPressed: () {
-                                      setState(() => currentColor = pickerColor);
-                                      Navigator.of(context).pop();
-                                    },
-                                  ),
-                                ],
+                                    actions: <Widget>[
+                                      FlatButton(
+                                        child: const Text('Got it'),
+                                        onPressed: () {
+                                          setState(
+                                              () => currentColor = pickerColor);
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                },
                               );
-                            },
-                          );
-                        }),
+                            }),
                         Container(
-                          margin: EdgeInsets.only(left: 20,top: 15),
+                          margin: EdgeInsets.only(left: 20, top: 15),
                           width: 30,
                           height: 30,
                           decoration: BoxDecoration(
-                            color: currentColor,
-                            shape: BoxShape.circle,
-                            border:Border.all(color: Colors.black12,width: 2)
-                          ),
+                              color: currentColor,
+                              shape: BoxShape.circle,
+                              border:
+                                  Border.all(color: Colors.black12, width: 2)),
                         )
                       ],
                     ),
-                    GestureDetector(child: Text("bas") ,onTap: ()=>print(currentColor.toString().substring(6,16)),)
+                    GestureDetector(
+                      child: Text("bas"),
+                      onTap: () =>
+                          print(currentColor.toString().substring(6, 16)),
+                    )
                   ],
                 ),
               ),
@@ -468,6 +499,7 @@ class _CreateNewTaskPageState extends State<CreateNewTaskPage> {
               newTime.hour.toString().length < 2)
             _endTimeShow = "0${newTime.hour}:0${newTime.minute}";
         }
+
         startBool = false;
         endBool = false;
       });
@@ -478,16 +510,20 @@ class _CreateNewTaskPageState extends State<CreateNewTaskPage> {
     setState(() => pickerColor = color);
   }
 
-  /* Widget timePicker() {
-   SizedBox(
-          child: CupertinoDatePicker(
-        initialDateTime: DateTime.now(),
-        mode: CupertinoDatePickerMode.time,
-        use24hFormat: true,
-        onDateTimeChanged: (dateTime) =>
-            setState(() => _startTimeShow = dateTime.toString()),
-      ));
-}*/
+  Widget timePicker() {
+    SizedBox(
+      height: 100,
+      child: CupertinoDatePicker(
+          initialDateTime: DateTime.now(),
+          mode: CupertinoDatePickerMode.time,
+          use24hFormat: true,
+          onDateTimeChanged: (dateTime) => setState(() {
+                if (startBool) _startTimeShow = newFormatter.format(dateTime);
+                if (endBool) _endTimeShow = newFormatter.format(dateTime);
+              })),
+    );
+  }
+
   Widget hourContainer(
       TextEditingController txtController, String str, String limit) {
     return Container(
@@ -544,7 +580,7 @@ class _CreateNewTaskPageState extends State<CreateNewTaskPage> {
   void saveObject() {
     if (_formKey.currentState.validate()) {
       _addNote(Notes(_controllerTitle.text, _controllerDesc.text, myDate,
-          _startTimeShow, _endTimeShow, options[tag],currentColor.toString()));
+          _startTimeShow, _endTimeShow, options[tag], currentColor.toString()));
     }
   }
 
