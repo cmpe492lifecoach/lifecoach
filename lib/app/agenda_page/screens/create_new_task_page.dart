@@ -196,26 +196,32 @@ class _CreateNewTaskPageState extends State<CreateNewTaskPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: <Widget>[
                               Platform.isIOS
-                                  ?   Column(
-                                    children: [
-                                      Text("Start Time"),
-                                      Container(
-                                        margin: EdgeInsets.only(top: 10),
-                                        width: 100,
-                                        child: SizedBox(
-                  height: 100,
-                  child: CupertinoDatePicker(
-                      initialDateTime: DateTime.now(),
-                      mode: CupertinoDatePickerMode.time,
-                      use24hFormat: true,
-                      onDateTimeChanged: (dateTime) => setState(() {
-                          _startTimeShow = newFormatter.format(dateTime);
-
-                      })),
-                ),
-                                      ),
-                                    ],
-                                  )
+                                  ? Column(
+                                      children: [
+                                        Text("Start Time",
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                        ),),
+                                        Container(
+                                          margin: EdgeInsets.only(top: 10),
+                                          width: 100,
+                                          child: SizedBox(
+                                            height: 100,
+                                            child: CupertinoDatePicker(
+                                                initialDateTime: DateTime.now(),
+                                                mode: CupertinoDatePickerMode
+                                                    .time,
+                                                use24hFormat: true,
+                                                onDateTimeChanged: (dateTime) =>
+                                                    setState(() {
+                                                      _startTimeShow =
+                                                          newFormatter
+                                                              .format(dateTime);
+                                                    })),
+                                          ),
+                                        ),
+                                      ],
+                                    )
                                   : GestureDetector(
                                       child: Material(
                                         borderRadius: BorderRadius.circular(11),
@@ -248,26 +254,31 @@ class _CreateNewTaskPageState extends State<CreateNewTaskPage> {
                               Platform.isIOS
                                   ? GestureDetector(
                                       child: Column(
-                                        children: [
-                                          Text("End Time"),
-                                          Container(
-                                            margin: EdgeInsets.only(top: 10),
-                                            width: 100,
-                                            child: SizedBox(
-                                              height: 100,
-                                              child: CupertinoDatePicker(
-                                                  initialDateTime: DateTime.now(),
-                                                  mode: CupertinoDatePickerMode.time,
-                                                  use24hFormat: true,
-                                                  onDateTimeChanged: (dateTime) => setState(() {
-                                                    _endTimeShow = newFormatter.format(dateTime);
-
-                                                  })),
-                                            ),
+                                      children: [
+                                        Text("End Time",
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                          ),),
+                                        Container(
+                                          margin: EdgeInsets.only(top: 10),
+                                          width: 100,
+                                          child: SizedBox(
+                                            height: 100,
+                                            child: CupertinoDatePicker(
+                                                initialDateTime: DateTime.now(),
+                                                mode: CupertinoDatePickerMode
+                                                    .time,
+                                                use24hFormat: true,
+                                                onDateTimeChanged: (dateTime) =>
+                                                    setState(() {
+                                                      _endTimeShow =
+                                                          newFormatter
+                                                              .format(dateTime);
+                                                    })),
                                           ),
-                                        ],
-                                      )
-                                    )
+                                        ),
+                                      ],
+                                    ))
                                   : GestureDetector(
                                       child: Material(
                                         elevation: 15,
@@ -343,8 +354,8 @@ class _CreateNewTaskPageState extends State<CreateNewTaskPage> {
                         GestureDetector(
                             child: Container(
                                 margin: EdgeInsets.only(top: 15),
-                                width: 150,
-                                alignment: Alignment.centerLeft,
+                                width: 170,
+                                alignment: Alignment.center,
                                 decoration: BoxDecoration(
                                     border: Border.all(
                                         color: Colors.black38, width: 2),
@@ -352,6 +363,7 @@ class _CreateNewTaskPageState extends State<CreateNewTaskPage> {
                                 padding: EdgeInsets.all(10),
                                 child: Text(
                                   "Select Task Color",
+
                                   style: TextStyle(
                                     fontSize: 16,
                                     color: Colors.black,
@@ -407,11 +419,6 @@ class _CreateNewTaskPageState extends State<CreateNewTaskPage> {
                         )
                       ],
                     ),
-                    GestureDetector(
-                      child: Text("bas"),
-                      onTap: () =>
-                          print(currentColor.toString().substring(6, 16)),
-                    )
                   ],
                 ),
               ),
@@ -519,7 +526,7 @@ class _CreateNewTaskPageState extends State<CreateNewTaskPage> {
     setState(() => pickerColor = color);
   }
 
-   Widget timePicker() {
+  Widget timePicker() {
     SizedBox(
       height: 100,
       child: CupertinoDatePicker(

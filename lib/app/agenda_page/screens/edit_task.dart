@@ -29,6 +29,7 @@ class EditTaskPage extends StatefulWidget {
 }
 
 class _EditTaskPageState extends State<EditTaskPage> {
+  DateFormat newFormatter = DateFormat('HH-mm');
   Color pickerColor = Color(0xff443a49);
   Color currentColor = Color(0xff443a49);
   int tag = 0;
@@ -221,8 +222,31 @@ class _EditTaskPageState extends State<EditTaskPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: <Widget>[
                         Platform.isIOS
-                            ? GestureDetector(
-                          child: Text("basd"),
+                            ? Column(
+                          children: [
+                            Text("Start Time",
+                              style: TextStyle(
+                                fontSize: 16,
+                              ),),
+                            Container(
+                              margin: EdgeInsets.only(top: 10),
+                              width: 100,
+                              child: SizedBox(
+                                height: 100,
+                                child: CupertinoDatePicker(
+                                    initialDateTime: DateTime.now(),
+                                    mode: CupertinoDatePickerMode
+                                        .time,
+                                    use24hFormat: true,
+                                    onDateTimeChanged: (dateTime) =>
+                                        setState(() {
+                                          _startTimeShow =
+                                              newFormatter
+                                                  .format(dateTime);
+                                        })),
+                              ),
+                            ),
+                          ],
                         )
                             : GestureDetector(
                             child: Material(
@@ -254,8 +278,31 @@ class _EditTaskPageState extends State<EditTaskPage> {
                               _timePickerForAndroid();
                             }),
                         Platform.isIOS
-                            ? GestureDetector(
-                          child: Text("basd"),
+                            ? Column(
+                          children: [
+                            Text("End Time",
+                              style: TextStyle(
+                                fontSize: 16,
+                              ),),
+                            Container(
+                              margin: EdgeInsets.only(top: 10),
+                              width: 100,
+                              child: SizedBox(
+                                height: 100,
+                                child: CupertinoDatePicker(
+                                    initialDateTime: DateTime.now(),
+                                    mode: CupertinoDatePickerMode
+                                        .time,
+                                    use24hFormat: true,
+                                    onDateTimeChanged: (dateTime) =>
+                                        setState(() {
+                                          _endTimeShow =
+                                              newFormatter
+                                                  .format(dateTime);
+                                        })),
+                              ),
+                            ),
+                          ],
                         )
                             : GestureDetector(
                             child: Material(
@@ -331,8 +378,8 @@ class _EditTaskPageState extends State<EditTaskPage> {
                         GestureDetector(
                             child: Container(
                                 margin: EdgeInsets.only(top: 15),
-                                width: 150,
-                                alignment: Alignment.centerLeft,
+                                width: 170,
+                                alignment: Alignment.center,
                                 decoration: BoxDecoration(
                                     border: Border.all(color: Colors.black38,width: 2),
                                     borderRadius: BorderRadius.circular(11)
@@ -394,7 +441,6 @@ class _EditTaskPageState extends State<EditTaskPage> {
                         )
                       ],
                     ),
-                    GestureDetector(child: Text("bas") ,onTap: ()=>print(currentColor.toString().substring(6,16)),)
                   ],
 
                 ),
