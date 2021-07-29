@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lifecoach_app/app/agenda_page/dates_list.dart';
+import 'package:intl/intl.dart';
+
 import 'package:lifecoach_app/app/agenda_page/models/notes.dart';
 import 'package:lifecoach_app/app/agenda_page/screens/edit_task.dart';
 import 'package:lifecoach_app/app/agenda_page/utils/dbHelper.dart';
@@ -7,7 +8,7 @@ import 'package:lifecoach_app/app/colors/light_colors.dart';
 import 'package:lifecoach_app/app/agenda_page/widgets/task_container.dart';
 import 'package:lifecoach_app/app/agenda_page/screens/create_new_task_page.dart';
 import 'package:lifecoach_app/app/agenda_page/widgets/back_button.dart';
-import 'dart:math' as math;
+
 
 class CalendarPage extends StatefulWidget {
   @override
@@ -17,7 +18,7 @@ class CalendarPage extends StatefulWidget {
 class CalendarPageState extends State<CalendarPage>
     with SingleTickerProviderStateMixin {
   List<bool> isSelected = List.generate(1, (_) => false);
-  List<Notes> allNotes = new List<Notes>();
+  List<Notes> allNotes;
   DatabaseHelper _databaseHelper = DatabaseHelper();
   AnimationController controller;
   Animation<double> animation;
@@ -36,7 +37,7 @@ class CalendarPageState extends State<CalendarPage>
     animation = CurvedAnimation(
       parent: controller,
       curve: Curves.easeInOutCubic,
-    ).drive(Tween(begin: 0, end: 2));
+    ).drive(Tween(begin: 0, end: 3));
 
     super.initState();
   }
@@ -45,16 +46,6 @@ class CalendarPageState extends State<CalendarPage>
   void dispose() {
     controller.dispose();
     super.dispose();
-  }
-
-  void _handleOnPressed() {
-    // _animationController =
-    //     AnimationController( vsync: this,
-    //       duration: new Duration(milliseconds: 5000),
-    //     );
-    // _animationController.repeat();
-
-    getNotes();
   }
 
   void getNotes() async {
@@ -100,7 +91,7 @@ class CalendarPageState extends State<CalendarPage>
                         color: LightColors.kGreen,
                         borderRadius: BorderRadius.circular(30),
                       ),
-                      child: FlatButton(
+                      child: MaterialButton(
                         onPressed: () {
                           Navigator.push(
                             context,
@@ -140,7 +131,7 @@ class CalendarPageState extends State<CalendarPage>
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'April, 2020',
+                    '${DateFormat('d MMMM').format(DateTime.now())} ${DateFormat('EEEE').format(DateTime.now())} ',
                     style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
                   ),
                   GestureDetector(
@@ -160,13 +151,30 @@ class CalendarPageState extends State<CalendarPage>
               SizedBox(height: 20.0),
               Expanded(
                 child: SingleChildScrollView(
-                  child: Container(
-                    width: double.infinity,
+
+
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Expanded(
+                        allNotes.length==0
+                        ?Container(
+
+                          width: MediaQuery.of(context).size.width*0.9,
+                          height: 100,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: LightColors.kDarkYellow,
+                          ),
+                          alignment: Alignment.center,
+                          child: Text(
+                              "Add Your First Task Now",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600
+                          ),),
+                        )
+                        :Expanded(
                           flex: 1,
                           child: ListView.builder(
                             shrinkWrap: true,
@@ -174,52 +182,22 @@ class CalendarPageState extends State<CalendarPage>
                             scrollDirection: Axis.vertical,
                             itemCount: allNotes.length,
                             itemBuilder: (BuildContext context, int index) {
-                              bool taskDone = false;
-                              randomizeColor() {
-                                var myColor = randomColor();
-                                if (myColor != oldColor) {
-                                  initState() {
-                                    oldColor = myColor;
-                                  }
-
-                                  initState();
-
-                                  return myColor;
-                                } else {
-                                  randomizeColor();
-                                }
-                              }
-
-                              var color = randomizeColor();
-
-                              if (int.parse(
-                                      allNotes[index].date.substring(6, 10)) <
-                                  DateTime.now().year) {
-                                taskDone = true;
-                              } else if (!taskDone &&
-                                  int.parse(allNotes[index]
-                                          .date
-                                          .substring(3, 5)) <
-                                      DateTime.now().month) {
-                                taskDone = true;
-                              } else
-                                taskDone = false;
-
+                              bool taskDone=isCompleted(index);
                               return Dismissible(
                                 key: UniqueKey(),
-                                child: TaskContainer(
-                                  title: allNotes[index].title,
-                                  subtitle: allNotes[index].description,
-                                  startTime: allNotes[index].startTime,
-                                  endTime: allNotes[index].endTime,
-                                  category: allNotes[index].category,
-                                  color: Color(int.parse(
-                                      "0x7a${allNotes[index].color.toString().substring(10, 16)}")),
-                                  icon: taskDone == true
-                                      ? Icons.check
-                                      : Icons.access_time,
-                                  boxColor: color,
-                                ),
+                                  child: TaskContainer(
+                                    title: allNotes[index].title,
+                                    subtitle: allNotes[index].description,
+                                    startTime: allNotes[index].startTime,
+                                    endTime: allNotes[index].endTime,
+                                    category: allNotes[index].category,
+                                    color: Color(int.parse(
+                                        "0x7a${allNotes[index].color.toString().substring(10, 16)}")),
+                                    icon: taskDone
+                                        ? Icons.check
+                                        : Icons.access_time,
+                                  ),
+
                                 confirmDismiss: (direction) async {
                                   if (direction ==
                                       DismissDirection.startToEnd) {
@@ -268,13 +246,15 @@ class CalendarPageState extends State<CalendarPage>
                             },
                           ),
                         ),
+
                       ],
-                    ),
+
                   ),
                 ),
               ),
               TextButton(
                   onPressed: () {
+
                     for (int i = 0; i < allNotes.length; i++) {
                       print(allNotes[i].toMap());
                     }
@@ -287,35 +267,39 @@ class CalendarPageState extends State<CalendarPage>
     );
   }
 
-  randomColor() {
-    var _random = new math.Random();
-    var _randomNumber = _random.nextInt(4) + 1;
-    switch (_randomNumber) {
-      case 1:
-        return LightColors.kLavender;
-        break;
-      case 2:
-        return LightColors.kPalePink;
-        break;
-      case 3:
-        return LightColors.kGreen;
-        break;
-      case 4:
-        return LightColors.kDarkYellow;
-        break;
+  bool isCompleted(int i ){
+    bool taskDone = false;
+    bool keepSearching=false;
+    if (int.parse(
+        allNotes[i].date.substring(6, 10)) <
+        DateTime.now().year) {
+      taskDone = true;
     }
+    if(int.parse(
+        allNotes[i].date.substring(6, 10)) ==
+        DateTime.now().year)
+    {keepSearching=true;
+    }
+    if (keepSearching &&
+        int.parse(allNotes[i]
+            .date
+            .substring(3, 5)) <
+            DateTime.now().month)
+    {
+      taskDone = true;
+    }
+    else if(keepSearching &&  int.parse(allNotes[i]
+        .date
+        .substring(3, 5)) ==
+        DateTime.now().month)
+    {keepSearching=true;
+    }
+    else{keepSearching=false;}
+    if (keepSearching && int.parse(allNotes[i].date.substring(0,2))<DateTime.now().day){
+      print(9<7);
+      taskDone = true;
+    }
+    print(allNotes[i].toMap());
+    return taskDone;
   }
-
-/* dateComparison(index){
-    if(int.parse(allNotes[index].date.substring(6,10))<DateTime.now().year){
-      print(int.parse(allNotes[index].date.substring(6,10));
-          taskDone=true;
-          }
-          else if(!taskDone&&int.parse(allNotes[index].date.substring(3,5))<DateTime.now().month){
-    taskDone=true;
-    }
-    else if(!taskDone&&int.parse(allNotes[index].date.substring(0,2))<DateTime.now().day){
-    taskDone=true;
-    }
-  }*/
 }

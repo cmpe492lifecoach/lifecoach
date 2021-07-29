@@ -3,18 +3,14 @@ import 'dart:io';
 import 'package:chips_choice/chips_choice.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:lifecoach_app/app/agenda_page/models/notes.dart';
 import 'package:lifecoach_app/app/agenda_page/screens/calendar_page.dart';
 import 'package:lifecoach_app/app/agenda_page/utils/dbHelper.dart';
 import 'package:lifecoach_app/app/agenda_page/widgets/top_container.dart';
-import 'package:lifecoach_app/app/agenda_page/widgets/my_text_field.dart';
-import 'package:lifecoach_app/app/agenda_page/screens/home_page.dart';
 import 'package:lifecoach_app/app/colors/light_colors.dart';
 import 'package:lifecoach_app/app/agenda_page/widgets/back_button.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import '../widgets/build_form.dart';
 import 'package:intl/intl.dart';
 
@@ -29,6 +25,7 @@ class EditTaskPage extends StatefulWidget {
 }
 
 class _EditTaskPageState extends State<EditTaskPage> {
+  List colors=[LightColors.kDarkYellow,Color(0xffe0179d),LightColors.kPalePink,LightColors.kLavender,LightColors.kGreen,LightColors.kBlue,Color(0xff650b73)];
   DateFormat newFormatter = DateFormat('HH-mm');
   Color pickerColor = Color(0xff443a49);
   Color currentColor = Color(0xff443a49);
@@ -42,18 +39,13 @@ class _EditTaskPageState extends State<EditTaskPage> {
     'Science',
     'Other'
   ];
-  var _endTimeHour = TextEditingController();
-  var _startTimeHour = TextEditingController();
-  var _startTimeMin = TextEditingController();
-  var _endTimeMin = TextEditingController();
   String _startTimeShow = 'Start Time';
   String _endTimeShow = 'End Time';
   DatabaseHelper _databaseHelper = DatabaseHelper();
-  List<Notes> allNotes = new List<Notes>();
+  List<Notes> allNotes;
   var _controllerTitle = TextEditingController();
   var _controllerDesc = TextEditingController();
   var _formKey = GlobalKey<FormState>();
-  int clickedNoteID;
   DateTime selectedDate = DateTime.now();
   String dateToShow;
   final myController = TextEditingController();
@@ -93,7 +85,6 @@ class _EditTaskPageState extends State<EditTaskPage> {
           tag=i;
         });
     }
-    print("tag bu $tag");
   }
 
   _selectDate(BuildContext context) async {
@@ -113,10 +104,6 @@ class _EditTaskPageState extends State<EditTaskPage> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    var downwardIcon = Icon(
-      Icons.keyboard_arrow_down,
-      color: Colors.black54,
-    );
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -363,7 +350,12 @@ class _EditTaskPageState extends State<EditTaskPage> {
                           wrapped: true,
                           choiceStyle: C2ChoiceStyle(borderWidth: 2),
                           value: tag,
-                          onChanged: (val) => setState(() => tag = val),
+                          onChanged: (val) {
+                            setState(() {
+                              tag=val;
+                              currentColor=colors[tag];
+                            });
+                          } ,
                           choiceItems: C2Choice.listFrom<int, String>(
                             source: options,
                             value: (i, v) => i,
@@ -417,7 +409,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
                                       ),
                                     ),
                                     actions: <Widget>[
-                                      FlatButton(
+                                      TextButton(
                                         child: const Text('Got it'),
                                         onPressed: () {
                                           setState(() => currentColor = pickerColor);

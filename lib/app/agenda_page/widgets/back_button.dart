@@ -4,7 +4,7 @@ import 'package:lifecoach_app/app/agenda_page/screens/home_page.dart';
 import 'package:lifecoach_app/app/colors/light_colors.dart';
 
 class MyBackButton extends StatelessWidget {
-  int pushPop;
+  final int pushPop;
 
  MyBackButton({this.pushPop});
   @override

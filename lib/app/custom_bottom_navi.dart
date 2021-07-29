@@ -54,7 +54,7 @@ class CustomBottomNavigation extends StatelessWidget {
     final creatingnewTabs = TabItemData.allTabs[tabItem];
     return BottomNavigationBarItem(
       icon: Icon(creatingnewTabs.icon),
-      title: Text(creatingnewTabs.title),
+      label: creatingnewTabs.title,
     );
   }
 

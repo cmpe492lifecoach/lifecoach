@@ -3,18 +3,14 @@ import 'dart:io';
 import 'package:chips_choice/chips_choice.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:lifecoach_app/app/agenda_page/models/notes.dart';
 import 'package:lifecoach_app/app/agenda_page/screens/calendar_page.dart';
 import 'package:lifecoach_app/app/agenda_page/utils/dbHelper.dart';
 import 'package:lifecoach_app/app/agenda_page/widgets/top_container.dart';
-import 'package:lifecoach_app/app/agenda_page/widgets/my_text_field.dart';
-import 'package:lifecoach_app/app/agenda_page/screens/home_page.dart';
 import 'package:lifecoach_app/app/colors/light_colors.dart';
 import 'package:lifecoach_app/app/agenda_page/widgets/back_button.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import '../widgets/build_form.dart';
 import 'package:intl/intl.dart';
 
@@ -24,9 +20,10 @@ class CreateNewTaskPage extends StatefulWidget {
 }
 
 class _CreateNewTaskPageState extends State<CreateNewTaskPage> {
+  List colors=[LightColors.kDarkYellow,Color(0xffe0179d),LightColors.kPalePink,LightColors.kLavender,LightColors.kGreen,LightColors.kBlue,Color(0xff650b73)];
   DateFormat newFormatter = DateFormat('HH-mm');
   Color pickerColor = Color(0xff443a49);
-  Color currentColor = Color(0xff443a49);
+  Color currentColor = LightColors.kDarkYellow;
   int tag = 0;
   List<String> options = [
     'Sports',
@@ -37,20 +34,16 @@ class _CreateNewTaskPageState extends State<CreateNewTaskPage> {
     'Science',
     'Other'
   ];
-  var _endTimeHour = TextEditingController();
-  var _startTimeHour = TextEditingController();
-  var _startTimeMin = TextEditingController();
-  var _endTimeMin = TextEditingController();
+
   String _startTimeShow = '';
   String _endTimeShow = '';
   DatabaseHelper _databaseHelper = DatabaseHelper();
-  List<Notes> allNotes = new List<Notes>();
+  List<Notes> allNotes;
   var _controllerTitle = TextEditingController();
   var _controllerDesc = TextEditingController();
   var _formKey = GlobalKey<FormState>();
   int clickedNoteID;
   DateTime selectedDate = DateTime.now();
-  final myController = TextEditingController();
   final DateFormat formatter = DateFormat('dd-MM-yyyy');
   String myDate;
   bool startBool = false;
@@ -340,7 +333,12 @@ class _CreateNewTaskPageState extends State<CreateNewTaskPage> {
                           wrapped: true,
                           choiceStyle: C2ChoiceStyle(borderWidth: 2),
                           value: tag,
-                          onChanged: (val) => setState(() => tag = val),
+                          onChanged: (val) {
+                            setState(() {
+                              tag=val;
+                              currentColor=colors[tag];
+                            });
+                          } ,
                           choiceItems: C2Choice.listFrom<int, String>(
                             source: options,
                             value: (i, v) => i,
@@ -394,7 +392,7 @@ class _CreateNewTaskPageState extends State<CreateNewTaskPage> {
                                       ),
                                     ),
                                     actions: <Widget>[
-                                      FlatButton(
+                                      TextButton(
                                         child: const Text('Got it'),
                                         onPressed: () {
                                           setState(
@@ -429,10 +427,11 @@ class _CreateNewTaskPageState extends State<CreateNewTaskPage> {
                 width: double.infinity,
                 child: MaterialButton(
                   onPressed: () {
+                    saveObject();
                     if (_formKey.currentState.validate()) {
                       ScaffoldMessenger.of(context)
                           .showSnackBar(SnackBar(content: Text('Task Saved')));
-                      saveObject();
+
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -461,26 +460,6 @@ class _CreateNewTaskPageState extends State<CreateNewTaskPage> {
     );
   }
 
-  // Widget buildForm(TextEditingController txtController, String str) {
-  //   return Container(
-  //       child: TextFormField(
-  //     autofocus: false,
-  //     controller: txtController,
-  //     validator: (value) {
-  //       if (value == null || value.isEmpty) {
-  //         return 'Please enter some title';
-  //       }
-  //       return null;
-  //     },
-  //     decoration: InputDecoration(
-  //         labelText: str,
-  //         labelStyle: TextStyle(color: Colors.black45),
-  //         focusedBorder:
-  //             UnderlineInputBorder(borderSide: BorderSide(color: Colors.black)),
-  //         border:
-  //             UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey))),
-  //   ));
-  // }
 
   _timePickerForAndroid() async {
     final TimeOfDay newTime = await showTimePicker(
@@ -526,73 +505,6 @@ class _CreateNewTaskPageState extends State<CreateNewTaskPage> {
     setState(() => pickerColor = color);
   }
 
-  Widget timePicker() {
-    SizedBox(
-      height: 100,
-      child: CupertinoDatePicker(
-          initialDateTime: DateTime.now(),
-          mode: CupertinoDatePickerMode.time,
-          use24hFormat: true,
-          onDateTimeChanged: (dateTime) => setState(() {
-                if (startBool) _startTimeShow = newFormatter.format(dateTime);
-                if (endBool) _endTimeShow = newFormatter.format(dateTime);
-              })),
-    );
-  }
-
-  Widget hourContainer(
-      TextEditingController txtController, String str, String limit) {
-    return Container(
-      child: Form(
-          child: TextFormField(
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          color: Colors.black,
-          fontSize: 30,
-        ),
-        keyboardType: TextInputType.number,
-        inputFormatters: [
-          LengthLimitingTextInputFormatter(2),
-          FilteringTextInputFormatter.digitsOnly,
-        ],
-        onChanged: (String value) {
-          if (int.parse(value) > int.parse(limit)) {
-            txtController.text = limit;
-          }
-        },
-        decoration: InputDecoration(
-            fillColor: Colors.white,
-            filled: true,
-            hintStyle: TextStyle(fontSize: 20.0, color: Colors.grey),
-            hintText: str,
-            focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.black)),
-            border: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey))),
-        controller: txtController,
-      )),
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: Colors.blueAccent,
-          width: 2.0,
-        ),
-        borderRadius: BorderRadius.circular(15),
-      ),
-      padding: EdgeInsets.all(10),
-      width: 100,
-    );
-  }
-
-  Widget buildButton(String str, Color buttonColor, Function eventFunc) {
-    return RaisedButton(
-      child: Text(str),
-      color: buttonColor,
-      onPressed: () {
-        eventFunc();
-      },
-    );
-  }
-
   void saveObject() {
     if (_formKey.currentState.validate()) {
       _addNote(Notes(_controllerTitle.text, _controllerDesc.text, myDate,
@@ -603,16 +515,5 @@ class _CreateNewTaskPageState extends State<CreateNewTaskPage> {
   void _addNote(Notes note) async {
     await _databaseHelper.insert(note);
 
-    setState(() {
-      getNotes();
-      _startTimeShow = 'Pick a Time';
-      _endTimeShow = 'Pick a Time';
-      _startTimeHour.text = '';
-      _startTimeMin.text = '';
-      _endTimeHour.text = '';
-      _endTimeMin.text = '';
-      _controllerTitle.text = "";
-      _controllerDesc.text = "";
-    });
   }
 }

@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:lifecoach_app/model/user.dart';
 import 'package:lifecoach_app/viewmodel/user_model.dart';
 import 'package:path/path.dart';
@@ -8,8 +7,7 @@ import 'package:lifecoach_app/app/agenda_page/models/notes.dart';
 class DatabaseHelper {
   static Database _database;
 
-  String _notesTable = "notes";
-  String _secondTable = "notes2";
+
   String _columnID = "id";
   String _columnTitle = "title";
   String _columnDescription = "description";

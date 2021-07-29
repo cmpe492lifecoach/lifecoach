@@ -33,7 +33,6 @@ class AgendaHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: LightColors.kLightYellow,
       body: SafeArea(

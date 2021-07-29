@@ -1,7 +1,4 @@
 
-
-import 'package:flutter/material.dart';
-
 class Notes {
   int id;
   String title;
