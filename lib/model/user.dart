@@ -22,12 +22,12 @@ class User {
       'userID' : userID, //'userID'---> firebase e kaydedilecek değerler. userID--> sınıfımızdaki değerler
       'email' : email ?? '',
       'userName' : userName ??  email.substring(0, email.indexOf('@')) + randomGenerateNumber(),
-      'profilURL' : profilURL ?? 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png',
+      'profilURL' : profilURL ?? 'https://tgtof.org.tr/wp-content/uploads/2019/08/bos-profil.png',
       'createdAt' : createdAt ?? FieldValue.serverTimestamp(),
       'updatedAt' : updatedAt ?? FieldValue.serverTimestamp(),
       'level' : level ?? 1,
       'weight' : weight ?? '',
-      'height' : height ?? '',
+      'height' : height ?? '10',
       'afterBeforePhoto' : afterBeforePhoto ?? '',
 
     };

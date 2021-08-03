@@ -28,8 +28,11 @@ class _ExerciseModeState extends State<ExerciseMode> {
 
           body: Center(
             child: Container(
+
               child: Column(
+
                 children: <Widget>[
+                  new Image.asset("assets/images/bodyBackground.jpeg"),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
@@ -37,14 +40,7 @@ class _ExerciseModeState extends State<ExerciseMode> {
 
                     ],
                   ),
-                  Container(
-                    height: 300,
-                    width: 300,
-                    child: Image(
-                      fit: BoxFit.cover,
-                      image: AssetImage("Images/logo.png"),
-                    ),
-                  ),
+
                   SizedBox(
                     height: 10,
                   ),
@@ -52,11 +48,11 @@ class _ExerciseModeState extends State<ExerciseMode> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       Padding(
-                        padding: const EdgeInsets.only(left: 30),
+                        padding: const EdgeInsets.only(left: 20, right: 20),
                         child: Text(
-                          "Your Preference",
+                          "What kind of exercise ?",
                           style: TextStyle(
-                              fontSize: 30, color: Colors.purpleAccent),
+                              fontSize: 35, color: Colors.lightGreen),
                         ),
                       ),
                     ],
@@ -72,10 +68,10 @@ class _ExerciseModeState extends State<ExerciseMode> {
                           },
                           child: Text(
                             "Random Mode",
-                            style: TextStyle(fontSize: 25),
+                            style: TextStyle(fontSize: 30),
                           )),
                       leading: Radio(
-                          activeColor: Colors.purpleAccent,
+                          activeColor: Colors.green,
                           value: "Random Mode",
                           groupValue: _mode,
                           onChanged: (selectedMode) {
@@ -95,11 +91,12 @@ class _ExerciseModeState extends State<ExerciseMode> {
                             });
                           },
                           child: Text(
-                            "Daywise Mode",
-                            style: TextStyle(fontSize: 25),
+                            "Personal Mode",
+                            style: TextStyle(fontSize: 30, ),
+
                           )),
                       leading: Radio(
-                          activeColor: Colors.purpleAccent,
+                          activeColor: Colors.green,
                           value: "Daywise Mode",
                           groupValue: _mode,
                           onChanged: (selectedMode) {
@@ -136,7 +133,7 @@ class _ExerciseModeState extends State<ExerciseMode> {
                             }),
                       );
                     },
-                    color: Colors.purpleAccent,
+                    color: Colors.green,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),
                     child: Padding(

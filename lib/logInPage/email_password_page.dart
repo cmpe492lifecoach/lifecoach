@@ -26,59 +26,60 @@ class _EmailAndPasswordPageState extends State<EmailAndPasswordPage> {
     debugPrint("Email: "+_email + " Password: "+_password);
     final _userModel = Provider.of<UserModel>(context, listen: false);
     if(_formType == FormType.LogIn){
-       try {
-         User _loginUser = await _userModel.signInWithEmailAndPassword(_email, _password);
-         if(_loginUser != null)
-           print("user ıd:" +_loginUser.userID.toString());
-       }on PlatformException catch (e){
-         PlatformAlertDialog(
-           header: "Sign In Error",
-           content: Errors.showErrors(e.code),
-           mainButtonText: "Close",
+      try {
+        User _loginUser = await _userModel.signInWithEmailAndPassword(_email, _password);
+        if(_loginUser != null)
+          print("user ıd:" +_loginUser.userID.toString());
+      }on PlatformException catch (e){
+        PlatformAlertDialog(
+          header: "Sign In Error",
+          content: Errors.showErrors(e.code),
+          mainButtonText: "Close",
 
-         ).show(context);
-       }
+        ).show(context);
+      }
     }else {
       try{
         User _createUser = await _userModel.createWithEmailAndPassword(_email, _password);
         if(_createUser != null)
           print("user ıd:" +_createUser.userID.toString());
       }on PlatformException catch(e){
-         PlatformAlertDialog(
-                header: "Create User Error",
-                content: Errors.showErrors(e.code),
-                mainButtonText: "Close",
+        PlatformAlertDialog(
+          header: "Create User Error",
+          content: Errors.showErrors(e.code),
+          mainButtonText: "Close",
 
-          ).show(context);
-        }
+        ).show(context);
+      }
 
     }
 
   }
 
   void _change() {
-          setState(() {
-            _formType = _formType == FormType.LogIn ? FormType.Register : FormType.LogIn;
-          });
+    setState(() {
+      _formType = _formType == FormType.LogIn ? FormType.Register : FormType.LogIn;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
 
-_buttonText = _formType == FormType.LogIn ? "Sign In" : "Sign Up";
-_linkText = _formType == FormType.LogIn ? "Is there any account ? Please Sign Up" : "Sign In Please";
+    _buttonText = _formType == FormType.LogIn ? "Sign In" : "Sign Up";
+    _linkText = _formType == FormType.LogIn ? "Is there any account ? Please Sign Up" : "Sign In Please";
 
-final _userModel = Provider.of<UserModel>(context);
+    final _userModel = Provider.of<UserModel>(context);
 
-if(_userModel.user != null){
-  Future.delayed(Duration(microseconds: 10), () {
-    Navigator.of(context).pop();
-  });
+    if(_userModel.user != null){
+      Future.delayed(Duration(microseconds: 10), () {
+        Navigator.of(context).pop();
+      });
 
-}
+    }
 
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.green,
           title: Text("Email and Password"),),
         body: _userModel.state == ViewState.Idle ? SingleChildScrollView(
           child: Padding(
@@ -86,52 +87,50 @@ if(_userModel.user != null){
             child: Form(
                 key: _formKey,
                 child: Column(
-              children: [
-                TextFormField(
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
-                    errorText: _userModel.emailErrorMessage != null ? _userModel.emailErrorMessage : null,
-                    prefixIcon: Icon(Icons.email),
-                    hintText: "Email",
-                    labelText: "Email",
-                    border: OutlineInputBorder(),
-                  ),
-                  onSaved: (String enterEmail) {
-                    _email = enterEmail;
-                  },
-                ),
+                  children: [
+                    TextFormField(
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: InputDecoration(
+                        errorText: _userModel.emailErrorMessage != null ? _userModel.emailErrorMessage : null,
+                        prefixIcon: Icon(Icons.email),
+                        hintText: "Email",
+                        labelText: "Email",
+                        border: OutlineInputBorder(),
+                      ),
+                      onSaved: (String enterEmail) {
+                        _email = enterEmail;
+                      },
+                    ),
 
-                SizedBox(height: 8,),
-                TextFormField(
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    errorText: _userModel.passwordErrorMessage != null ? _userModel.passwordErrorMessage : null,
-                    prefixIcon: Icon(Icons.admin_panel_settings),
-                    hintText: "Password",
-                    labelText: "Password",
-                    border: OutlineInputBorder(),
-                  ),
-                  onSaved: (String enterPassword) {
-                    _password = enterPassword;
+                    SizedBox(height: 8,),
+                    TextFormField(
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        errorText: _userModel.passwordErrorMessage != null ? _userModel.passwordErrorMessage : null,
+                        prefixIcon: Icon(Icons.admin_panel_settings),
+                        hintText: "Password",
+                        labelText: "Password",
+                        border: OutlineInputBorder(),
+                      ),
+                      onSaved: (String enterPassword) {
+                        _password = enterPassword;
 
-                  },
-                ),
-                SizedBox(height: 8,),
-                SocialLogInButton(
-                  buttonText: _buttonText,
-                  buttonColor: Theme
-                      .of(context)
-                      .primaryColor,
+                      },
+                    ),
+                    SizedBox(height: 8,),
+                    SocialLogInButton(
+                      buttonText: _buttonText,
+                     buttonColor: Colors.green,
 
-                  radius: 10,
-                  onPressed: () => _formSubmit(),
-                ),
-                SizedBox(height: 10,),
-                FlatButton(onPressed: () => _change(),
-                 child: Text(_linkText))
+                      radius: 10,
+                      onPressed: () => _formSubmit(),
+                    ),
+                    SizedBox(height: 10,),
+                    FlatButton(onPressed: () => _change(),
+                        child: Text(_linkText))
 
-              ],
-            )),
+                  ],
+                )),
           ),
         ) : Center(child: CircularProgressIndicator(),)
     );
@@ -141,6 +140,7 @@ if(_userModel.user != null){
 
 
 }
+
 
 
 

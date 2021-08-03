@@ -1,8 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
-//import 'package:audioplayers/audio_cache.dart';
-//import 'package:audioplayers/audioplayers.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -44,8 +43,7 @@ class _HomePageState extends State<HomePage> {
   String _startButtonText;
   bool isEndOfCycle;
   bool isStartedWorkout;
-  //AudioPlayer advancedPlayer = AudioPlayer();
-  //AudioCache audioCache;
+
 
   @override
   void initState() {
@@ -63,27 +61,36 @@ class _HomePageState extends State<HomePage> {
     _startButtonText = "Start";
     isEndOfCycle = false;
     isStartedWorkout = false;
-    //audioCache = AudioCache(fixedPlayer: advancedPlayer);
+
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-          appBar: AppBar(title: Text("Body Building"),),
-          body: Container(
-            height: double.infinity,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                image: AssetImage(
-                  "Images/background.png",
+      appBar: AppBar(title: Text("Exercise"),),
+      body: Container(
+        child: WillPopScope(
+
+          child: SafeArea(
+            child: Scaffold(
+              body: Container(
+                height: double.infinity,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: AssetImage(
+                      "Images/sports.jpeg",
+                    ),
+                  ),
                 ),
+                child: exercisePage(),
               ),
             ),
-            child: exercisePage(),
           ),
-        );
+        ),
+      ),
+    );
   }
 
   Widget exercisePage() => Builder(builder: (context) {
@@ -135,7 +142,7 @@ class _HomePageState extends State<HomePage> {
                     isStartedWorkout
                     ? Icon(
                   Icons.play_arrow,
-                  color: Colors.purpleAccent,
+                  color: Colors.green,
                 )
                     : _exerciseIndex > 0
                     ? Icon(Icons.done, color: Colors.green)
@@ -152,7 +159,7 @@ class _HomePageState extends State<HomePage> {
                 child: _exerciseIndex == 1 && isBreakTime == false
                     ? Icon(
                   Icons.play_arrow,
-                  color: Colors.purpleAccent,
+                  color: Colors.grey,
                 )
                     : _exerciseIndex > 1
                     ? Icon(Icons.done, color: Colors.green)
@@ -169,7 +176,7 @@ class _HomePageState extends State<HomePage> {
                 child: _exerciseIndex == 2 && isBreakTime == false
                     ? Icon(
                   Icons.play_arrow,
-                  color: Colors.purpleAccent,
+                  color: Colors.lightGreenAccent,
                 )
                     : _exerciseIndex > 2
                     ? Icon(Icons.done, color: Colors.green)
@@ -186,7 +193,7 @@ class _HomePageState extends State<HomePage> {
                 child: _exerciseIndex == 3 && isBreakTime == false
                     ? Icon(
                   Icons.play_arrow,
-                  color: Colors.purpleAccent,
+                  color: Colors.green,
                 )
                     : _exerciseIndex > 3
                     ? Icon(Icons.done, color: Colors.green)
@@ -206,7 +213,7 @@ class _HomePageState extends State<HomePage> {
                     (isEndOfCycle && !_finished)
                     ? Icon(
                   Icons.play_arrow,
-                  color: Colors.purpleAccent,
+                  color: Colors.greenAccent,
                 )
                     : _finished
                     ? Icon(Icons.done, color: Colors.green)
@@ -224,7 +231,7 @@ class _HomePageState extends State<HomePage> {
                 decoration: BoxDecoration(
                     border: Border.all(
                         color: _exerciseIndex == 0
-                            ? Colors.purpleAccent
+                            ? Colors.lightGreenAccent
                             : Colors.black),
                     borderRadius: BorderRadius.circular(10)),
                 height: 50,
@@ -242,7 +249,7 @@ class _HomePageState extends State<HomePage> {
                 decoration: BoxDecoration(
                     border: Border.all(
                         color: _exerciseIndex == 1
-                            ? Colors.purpleAccent
+                            ? Colors.lightGreen
                             : Colors.black),
                     borderRadius: BorderRadius.circular(10)),
                 height: 50,
@@ -260,7 +267,7 @@ class _HomePageState extends State<HomePage> {
                 decoration: BoxDecoration(
                     border: Border.all(
                         color: _exerciseIndex == 2
-                            ? Colors.purpleAccent
+                            ? Colors.lightGreenAccent
                             : Colors.black),
                     borderRadius: BorderRadius.circular(10)),
                 height: 50,
@@ -278,7 +285,7 @@ class _HomePageState extends State<HomePage> {
                 decoration: BoxDecoration(
                     border: Border.all(
                         color: _exerciseIndex == 3
-                            ? Colors.purpleAccent
+                            ? Colors.lightGreenAccent
                             : Colors.black),
                     borderRadius: BorderRadius.circular(10)),
                 height: 50,
@@ -296,7 +303,7 @@ class _HomePageState extends State<HomePage> {
                 decoration: BoxDecoration(
                     border: Border.all(
                         color: _exerciseIndex == 4
-                            ? Colors.purpleAccent
+                            ? Colors.lightGreenAccent
                             : Colors.black),
                     borderRadius: BorderRadius.circular(10)),
                 height: 50,
@@ -323,9 +330,9 @@ class _HomePageState extends State<HomePage> {
           height: 50,
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 40, right: 50),
+          padding: const EdgeInsets.only(left: 50, right: 50),
           child: Container(
-            width: 190,
+            width: 165,
             padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
                 border: Border.all(
@@ -339,7 +346,7 @@ class _HomePageState extends State<HomePage> {
                   size: 30,
                   color: isLowDuration ? Colors.red : Colors.black,
                 ),
-                Padding(padding: EdgeInsets.only(left: 20)),
+                Padding(padding: EdgeInsets.only(left: 10)),
                 Text(
                   "$minutes : $seconds",
                   style: TextStyle(
@@ -374,7 +381,7 @@ class _HomePageState extends State<HomePage> {
                   setState(() {
                     isStartButtonClicked = !isStartButtonClicked;
                   });
-                  //advancedPlayer.stop();
+
                 } else {
                   _finished = false;
                   _exerciseIndex = 0;
@@ -394,7 +401,7 @@ class _HomePageState extends State<HomePage> {
                   isStartButtonClicked = !isStartButtonClicked;
                 });
               },
-              color: Colors.purpleAccent,
+              color: Colors.green,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
               child: Text(
@@ -436,12 +443,10 @@ class _HomePageState extends State<HomePage> {
 
     // Single Timer for all the cycles
 
-    if (!isBreakTime && index != 6) {
-      //audioCache.play("song${widget.musicIndex[index - 1].toString()}.mp3");
-    }
+
     _timer = Timer.periodic(Duration(seconds: 1), (Timer timer) async {
       if (duration < 1 || index == 6) {
-        if (!isBreakTime) //advancedPlayer.stop();
+
         timer.cancel();
         if (((index == 5 || index == 6) &&
             counter == widget.setsCount - 1 &&

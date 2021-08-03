@@ -1,3 +1,5 @@
+
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:lifecoach_app/model/user.dart';
 
@@ -35,9 +37,28 @@ class FireStoreDBService implements DataBase {
   }
 
   @override
-  Future<bool> updateUserName(String userID, String newUserName) {
-    // TODO: implement updateUserName
-    throw UnimplementedError();
+  Future<bool> updateUserName(String userID, String newUserName) async{
+   var users = await _firebaseDB.collection("users").where("userName", isEqualTo: newUserName).getDocuments();
+   if(users.documents.length >= 1){
+     return false;
+   }else {
+
+     await _firebaseDB.collection("users").document(userID).updateData({'userName' : newUserName});
+     return true;
+   }
+
+  }
+
+  @override
+  Future<bool> updateHeight(String userID, String newHeight) async{
+    var users = await _firebaseDB.collection("users").where("height", isEqualTo: newHeight ).getDocuments();
+    if(users.documents.length >= 1){
+      return false;
+    }else{
+      await _firebaseDB.collection("users").document(userID).updateData({'height' : newHeight});
+      return true;
+    }
+
   }
 
 }

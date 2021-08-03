@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:lifecoach_app/common_widget/platform_alert_dialog.dart';
 import 'package:lifecoach_app/common_widget/social_login_button.dart';
 import 'package:lifecoach_app/viewmodel/user_model.dart';
@@ -12,17 +15,33 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
 
   TextEditingController _controllerUserName;
+  TextEditingController _controllerHeight;
+  File _profilePhoto;
+  final ImagePicker _picker = ImagePicker();
 
   @override
+  // ignore: must_call_super
   void initState() {
     // TODO: implement initState
     _controllerUserName = TextEditingController();
+    _controllerHeight = TextEditingController();
   }
 
   @override
   void dispose() {
    _controllerUserName.dispose();
+   _controllerHeight.dispose();
     super.dispose();
+
+  }
+
+
+  void _choosePhoto(ImageSource source) async{
+    var _pickedFoto = await _picker.getImage(source: source);
+    setState(() {
+      _profilePhoto = File(_pickedFoto.path);
+      Navigator.of(context).pop();
+    });
   }
 
   @override
@@ -49,10 +68,33 @@ class _ProfilePageState extends State<ProfilePage> {
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: CircleAvatar(
-                  radius: 75,
-                  backgroundColor: Colors.black,
-                 // backgroundImage: NetworkImage(_userModel.user.profilURL),
+                child: GestureDetector(
+                  onTap: () {
+                    showModalBottomSheet(context: context, builder: (context){
+                      return Container(
+                        height: 230,
+                        child: Column(
+                          children: <Widget>[
+                            ListTile(
+                              leading: Icon(Icons.camera),
+                              title: Text("Shoot from camera"),
+                              onTap: () => _choosePhoto(ImageSource.camera),
+                            ),
+                            ListTile(
+                              leading: Icon(Icons.image),
+                              title: Text("Choose Photo in Galery"),
+                              onTap: () => _choosePhoto(ImageSource.gallery),
+                            ),
+                          ],
+                        ),
+                      );
+                    });
+                  },
+                  child: CircleAvatar(
+                    radius: 75,
+                    backgroundColor: Colors.white,
+                    backgroundImage: AssetImage('assets/images/avatar.png')
+                  ),
                 ),
               ),
               Padding(
@@ -71,7 +113,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
                   controller: _controllerUserName,
-
+                   readOnly: false,
                   decoration: InputDecoration(
                     labelText: "Your Username",
                     hintText: "User Name",
@@ -79,6 +121,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
               ),
+
+
+
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: SocialLogInButton(
@@ -87,6 +132,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   buttonColor: Colors.green,
                   onPressed: (){
                         _userNameUpdate(context);
+
                   },
                 ),
               )
@@ -120,10 +166,26 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
-  void _userNameUpdate(BuildContext context) {
+  void _userNameUpdate(BuildContext context) async{
     final _userModel = Provider.of<UserModel>(context, listen: false);
     if(_userModel.user.userName != _controllerUserName.text){
-     // _userModel.updateUserName(_controllerUserName.text);
+      var updateResult = await _userModel.updateUserName(_userModel.user.userID, _controllerUserName.text);
+      if(updateResult == true){
+
+        PlatformAlertDialog(
+          header: "Successful",
+          content: "Username changed",
+          mainButtonText: 'Okay',
+        ).show(context);
+      }else {
+            _controllerUserName.text = _userModel.user.userName;
+        PlatformAlertDialog(
+          header: "Error",
+          content: "Username does not change",
+          mainButtonText: 'Okay',
+        ).show(context);
+      }
+
     }else
       {
         PlatformAlertDialog(
@@ -133,4 +195,7 @@ class _ProfilePageState extends State<ProfilePage> {
         ).show(context);
       }
   }
+
+
+
 }

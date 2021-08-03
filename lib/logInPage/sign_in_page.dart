@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lifecoach_app/logInPage/email_password_page.dart';
@@ -9,6 +12,72 @@ import 'package:provider/provider.dart';
 import '../locator.dart';
 import '../common_widget/social_login_button.dart';
 import 'package:flutter/cupertino.dart';
+
+import 'cantant_logIn.dart';
+import 'create_button.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: SplashScreen(),
+    );
+  }
+}
+
+class SplashScreen extends StatefulWidget {
+  @override
+  _SplashScreenState createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Timer(Duration(seconds: 3), () {
+      Navigator.of(context)
+          .pushReplacement(MaterialPageRoute(builder: (_) => SignInPage()));
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+
+            Text("Life Coach",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 60,
+                color: Colors.greenAccent
+              ),
+            ),
+            Image.asset(
+              'Images/logo.jpeg',
+              height: 120,
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class SignInPage extends StatelessWidget {
 
 
@@ -24,7 +93,7 @@ class SignInPage extends StatelessWidget {
     final _userModel = Provider.of<UserModel>(context, listen: false);
     User _user =await _userModel.signInWithGoogle();
     if(_user != null)
-    print("Sign In user ıd:" +_user.userID.toString());
+      print("Sign In user ıd:" +_user.userID.toString());
   }
   void _emailPasswordEntry(BuildContext context) {
     Navigator.of(context).push(CupertinoPageRoute(
@@ -38,58 +107,91 @@ class SignInPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.green,
         title: Text("Life Coach",style: TextStyle(
           fontWeight: FontWeight.bold,
-          fontSize: 30,
+          fontSize: 35,
         ),),
         elevation: 0,
       ),
       backgroundColor: Colors.white,
+
+
       body: Container(
 
         padding: EdgeInsets.all(20.0),
         child: Column(//column yukardan aşağı elemanlar sıralanır.
+
           mainAxisAlignment: MainAxisAlignment.center,//bunla ortadan başlatır.
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
             Text(
-              "Sign In",
+              "How to login",
               textAlign: TextAlign.center,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 32),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 32, color: Colors.green),
             ),
-            SizedBox(height: 8,),//sign in nin altına 8px boşluk bırakır.
-            SocialLogInButton(
-              buttonText: "Google",
-              buttonColor: Colors.white,
-              textColor: Colors.black,
-              //buttonIcon: Image.asset("images/images/icons8-google-48.png", width: 50, height: 50,),
-
-              onPressed: ()=> _googleWithEnter(context),
-            ),
-            SocialLogInButton(
-              buttonText: "Facebook",
-              textColor: Colors.white,
-              radius: 16,
+            SizedBox(height: 70,),
 
 
-              //buttonIcon: Icon(Icons.outgoing_mail,
-              //size: 32,
-              //color: Colors.white,),
-              onPressed: () {},
-              buttonColor: Color(0xFF334D92),
-            ),
+
+            SizedBox(height: 10,),//sign in nin altına 8px boşluk bırakır.
             SocialLogInButton(
               onPressed: () => _emailPasswordEntry(context),
               buttonText: "Email and Password",
+              height: 60,
+
+
 
             ),
+
+
+
+
+
+
             SocialLogInButton(
+
               onPressed: ()=> _guestEntry(context),
               buttonColor: Colors.cyan,
               buttonText: "Guest Entry",
+              height: 60,
 
             ),
+            SizedBox(height: 7,),
+            Text(
+              '-OR-',
+              style: TextStyle(color: Colors.blue, fontSize: 15,),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 7,),
+            Text(
+              'LogIn with',
+              style: TextStyle(color: Colors.blue, fontSize: 15,),
+              textAlign: TextAlign.center,
+            ),
+            ListTile(
+              title: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: SignInButton.mini(
+                      buttonType: ButtonType.facebook,
+                      onPressed: () => _googleWithEnter(context),),
+                  ),
+                  Expanded(
+                    child: SignInButton.mini(
+                        buttonType: ButtonType.google,
+                        onPressed: () {
+                          print('click');
+                        }),
+                  )
+                ],
+              ),
+            )
+
+
+
+
           ],
 
         ),
@@ -99,5 +201,3 @@ class SignInPage extends StatelessWidget {
 
 
 }
-
-

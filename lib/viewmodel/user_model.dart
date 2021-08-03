@@ -134,5 +134,24 @@ User get user => _user;
     return result;
   }
 
+  Future<bool> updateUserName(String userID, String newUserName) async{
+
+
+    var result = await _repository.updateUserName(userID, newUserName);
+    if(result){
+      _user.userName =newUserName;
+    }
+
+    return result;
+  }
+  Future<bool> updateHeight(String userID, String newHeight) async{
+  var result = await _repository.updateHeight(userID, newHeight);
+  if(result){
+    _user.height = newHeight;
+  }
+  return result;
+
+}
+
 
 }

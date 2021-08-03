@@ -93,131 +93,131 @@ class _WorkoutState extends State<Workout> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () {
-        return _moveToLastScreen();
-      },
-      child: SafeArea(
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text("BodyBuildingd"),
-          ),
-            body: Column(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        "Today's Workout",
-                        style: TextStyle(
-                          color: Colors.blue,
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 40,
-                      ),
-                      widget.isRandomMode
-                          ? IconButton(
-                        icon: Icon(
-                          Icons.refresh,
-                          color: Colors.blue,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            workoutList = generateRandomNumberSet();
-                          });
-                        },
-                      )
-                          : Container(),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    height: 500,
-                    child: ListView.builder(
-                        itemCount: workoutList.length,
-                        itemBuilder: (context, i) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Container(
-                                height: 110,
-                                width: 110,
-                                child: Card(
-                                  elevation: 5,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20)),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Image(
-                                        image: AssetImage(
-                                            "Images/${workoutList[i] + 1}.png")),
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(left: 50),
-                                child: Text(
-                                  "${i + 1}",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 30,
-                                  ),
-                                ),
-                              )
-                            ],
-                          );
-                        }),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 5, bottom: 15),
-                  child: AnimatedSwitcher(
-                    duration: Duration(seconds: 1),
+    return Scaffold(
+      appBar: AppBar(title: Text("Exercise"),),
+      body: WillPopScope(
+        onWillPop: () {
+          return _moveToLastScreen();
+        },
+        child: SafeArea(
+
+              child : Column(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Container(
-                          padding: EdgeInsets.only(right: 20),
-                          width: 150,
-                          height: 50,
-                          child: Form(
-                            key: _formKey,
-                            child: AnimatedSwitcher(
-                              duration: Duration(seconds: 250),
-                              child: _fieldState,
-                            ),
+                        Text(
+                          "Workout",
+                          style: TextStyle(
+                            color: Colors.blueGrey,
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                        AnimatedSwitcher(
-                          duration: Duration(seconds: 1),
-                          child: _countDownState,
+                        SizedBox(
+                          width: 40,
                         ),
-                        AnimatedSwitcher(
-                          duration: Duration(milliseconds: 250),
-                          child: _buttonStateWidget,
-                          transitionBuilder:
-                              (Widget child, Animation<double> animation) {
-                            return ScaleTransition(
-                              scale: animation,
-                              child: child,
-                            );
+                        widget.isRandomMode
+                            ? IconButton(
+                          icon: Icon(
+                            Icons.refresh,
+                            color: Colors.green,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              workoutList = generateRandomNumberSet();
+                            });
                           },
-                        ),
+                        )
+                            : Container(),
                       ],
                     ),
                   ),
-                ),
-              ],
-            )),
-      ),
+                  Expanded(
+                    child: Container(
+                      height: 500,
+                      child: ListView.builder(
+                          itemCount: workoutList.length,
+                          itemBuilder: (context, i) {
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Container(
+                                  height: 110,
+                                  width: 110,
+                                  child: Card(
+                                    elevation: 5,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20)),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Image(
+                                          image: AssetImage(
+                                              "Images/${workoutList[i] + 1}.png")),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(left: 50),
+                                  child: Text(
+                                    "${i + 1}",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 30,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            );
+                          }),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 5, bottom: 15),
+                    child: AnimatedSwitcher(
+                      duration: Duration(seconds: 1),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Container(
+                            padding: EdgeInsets.only(right: 20),
+                            width: 150,
+                            height: 50,
+                            child: Form(
+                              key: _formKey,
+                              child: AnimatedSwitcher(
+                                duration: Duration(seconds: 250),
+                                child: _fieldState,
+                              ),
+                            ),
+                          ),
+                          AnimatedSwitcher(
+                            duration: Duration(seconds: 1),
+                            child: _countDownState,
+                          ),
+                          AnimatedSwitcher(
+                            duration: Duration(milliseconds: 250),
+                            child: _buttonStateWidget,
+                            transitionBuilder:
+                                (Widget child, Animation<double> animation) {
+                              return ScaleTransition(
+                                scale: animation,
+                                child: child,
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              )),
+        ),
     );
+
   }
 
   Widget textField() => TextFormField(
@@ -248,7 +248,7 @@ class _WorkoutState extends State<Workout> {
     textAlign: TextAlign.center,
     cursorColor: Colors.blue,
     decoration: InputDecoration(
-      hintText: "Your Sets",
+      hintText: "Sets Number",
       border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
     ),
   );
@@ -346,7 +346,7 @@ class _WorkoutState extends State<Workout> {
       ),
       shape:
       RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      color: Colors.blue,
+      color: Colors.blueGrey,
     ),
   );
 
