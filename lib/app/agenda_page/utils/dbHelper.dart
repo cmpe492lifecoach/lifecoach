@@ -23,7 +23,6 @@ class DatabaseHelper {
     final _userModel = UserModel();
     _user = await _userModel.currentUser();
     tableName = "a" + _user.userID;
-    print("burasigeldi");
     _database = await initializeDatabase();
     databaseacildi=true;
     return _database;

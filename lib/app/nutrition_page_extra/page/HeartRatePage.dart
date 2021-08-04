@@ -1,4 +1,4 @@
-import 'package:admob_flutter/admob_flutter.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lifecoach_app/app/nutrition_page_extra/generated/l10n.dart';

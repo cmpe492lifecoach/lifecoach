@@ -1,4 +1,4 @@
-import 'package:admob_flutter/admob_flutter.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -270,12 +270,7 @@ class ConstantWidget {
     return Container(
       height: 55,
       color: ConstantData.bgColor,
-      child: AdmobBanner(
-        adUnitId: ConstantData.getBannerAdUnitId(),
-        adSize: AdmobBannerSize.BANNER,
-        listener: (AdmobAdEvent event, Map<String, dynamic> args) {},
-        onBannerCreated: (AdmobBannerController controller) {},
-      ),
+      child: Text("asd")
     );
   }
   static getAppBar(String s,Color color,Color iconColor,double elevation,Function function){
