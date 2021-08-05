@@ -1,4 +1,4 @@
-import 'package:admob_flutter/admob_flutter.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:lifecoach_app/app/nutrition_page_extra/page/OvulationResultPage.dart';
 

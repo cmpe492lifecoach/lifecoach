@@ -1,7 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:lifecoach_app/app/agenda_page/screens/home_page.dart';
-import 'package:lifecoach_app/app/agenda_page/screens/taskhomepage.dart';
+import 'package:lifecoach_app/app/agenda_page/screens/calendar_page.dart';
 import 'package:lifecoach_app/app/custom_bottom_navi.dart';
 import 'package:lifecoach_app/app/nutrition.dart';
 import 'package:lifecoach_app/app/profile.dart';
@@ -38,7 +37,7 @@ class _HomePageState extends State<HomePage> {
     return {
       TabItem.Sports : SportsPage(),
       TabItem.Nutrition : NutritionPage(),
-      TabItem.ToDo : AgendaHomePage(),
+      TabItem.ToDo : CalendarPage(),
       TabItem.Profil : ProfilePage(),
     };
   }

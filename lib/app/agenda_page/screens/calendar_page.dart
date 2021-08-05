@@ -7,7 +7,6 @@ import 'package:lifecoach_app/app/agenda_page/utils/dbHelper.dart';
 import 'package:lifecoach_app/app/colors/light_colors.dart';
 import 'package:lifecoach_app/app/agenda_page/widgets/task_container.dart';
 import 'package:lifecoach_app/app/agenda_page/screens/create_new_task_page.dart';
-import 'package:lifecoach_app/app/agenda_page/widgets/back_button.dart';
 
 
 class CalendarPage extends StatefulWidget {
@@ -18,12 +17,14 @@ class CalendarPage extends StatefulWidget {
 class CalendarPageState extends State<CalendarPage>
     with SingleTickerProviderStateMixin {
   List<bool> isSelected = List.generate(1, (_) => false);
-  List<Notes> allNotes;
+  List<Notes> allNotesToday=[];
+  List<Notes> allNotes=[];
   DatabaseHelper _databaseHelper = DatabaseHelper();
   AnimationController controller;
   Animation<double> animation;
   String saa = 'Tasks';
   Color oldColor;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -50,11 +51,25 @@ class CalendarPageState extends State<CalendarPage>
 
   void getNotes() async {
     var notesFuture = _databaseHelper.getAllNotes();
+    DateFormat formatter = DateFormat('dd-MM-yyyy');
+    String today=formatter.format(DateTime.now());
 
     await notesFuture.then((data) {
+      if(allNotesToday.isNotEmpty){
+        setState(() {
+          allNotesToday.clear();
+        });
+      }
+      data.forEach((element) {if(element.date==today)
+    {
+      setState(() {
+        allNotesToday.add(element);
+      });
+    }
+    });
       setState(() {
         this.allNotes = data;
-        if (allNotes == null) allNotes = [];
+        if (data == null) allNotes = [];
       });
     });
   }
@@ -62,6 +77,7 @@ class CalendarPageState extends State<CalendarPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(
@@ -72,9 +88,7 @@ class CalendarPageState extends State<CalendarPage>
           ),
           child: Column(
             children: <Widget>[
-              MyBackButton(
-                pushPop: 2,
-              ),
+
               SizedBox(height: 30.0),
               Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -113,20 +127,20 @@ class CalendarPageState extends State<CalendarPage>
                     ),
                   ]),
               SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    'Productive Day, Sourav',
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      color: Colors.grey,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                ],
+              Container(
+                margin: EdgeInsets.only(left: 5),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    GestureDetector(child: Text('Show All',),onTap:
+                      getNotes,),
+                    SizedBox(width: 20,),
+                    GestureDetector(child: Text('Show Today'),onTap:
+                    getToday,)
+                  ],
+                ),
               ),
-              SizedBox(height: 30),
+              SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -157,22 +171,32 @@ class CalendarPageState extends State<CalendarPage>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        allNotes.length==0
-                        ?Container(
+                        allNotes.isEmpty
+                        ?GestureDetector(
+                          child: Container(
 
-                          width: MediaQuery.of(context).size.width*0.9,
-                          height: 100,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: LightColors.kDarkYellow,
+                            width: MediaQuery.of(context).size.width*0.9,
+                            height: 100,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: LightColors.kDarkYellow,
+                            ),
+                            alignment: Alignment.center,
+                            child: Text(
+                                "Add Your First Task Now",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600
+                            ),),
                           ),
-                          alignment: Alignment.center,
-                          child: Text(
-                              "Add Your First Task Now",
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600
-                          ),),
+                          onTap: (){
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                builder: (context) => CreateNewTaskPage(),
+                            ),
+                            );
+                          },
                         )
                         :Expanded(
                           flex: 1,
@@ -201,13 +225,9 @@ class CalendarPageState extends State<CalendarPage>
                                 confirmDismiss: (direction) async {
                                   if (direction ==
                                       DismissDirection.startToEnd) {
-                                    await _databaseHelper
-                                        .delete(allNotes[index].id);
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(
-                                            content: Text('Task Deleted')));
-                                    getNotes();
-                                    return true;
+                                    myDialog(context,index);
+
+                                    return false;
                                   } else if (direction ==
                                       DismissDirection.endToStart) {
                                     Navigator.push(
@@ -267,6 +287,14 @@ class CalendarPageState extends State<CalendarPage>
     );
   }
 
+  getToday(){
+    setState(() {
+      allNotes=allNotesToday;
+    });
+
+
+  }
+
   bool isCompleted(int i ){
     bool taskDone = false;
     bool keepSearching=false;
@@ -296,10 +324,48 @@ class CalendarPageState extends State<CalendarPage>
     }
     else{keepSearching=false;}
     if (keepSearching && int.parse(allNotes[i].date.substring(0,2))<DateTime.now().day){
-      print(9<7);
       taskDone = true;
     }
-    print(allNotes[i].toMap());
     return taskDone;
+  }
+  Future<AlertDialog> myDialog(BuildContext context, int index) {
+    return showDialog<AlertDialog>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Container(
+            margin: EdgeInsets.all(8.0),
+            child: Form(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Text(
+                   "Do you really want to delete this task ?"
+                  ),
+                ],
+              ),
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+                onPressed: (){
+                  Navigator.of(context).pop();
+                },
+                child: Text("Cancel")),
+            TextButton(
+                onPressed: ()async {
+                  await _databaseHelper
+                      .delete(allNotes[index].id);
+                  getNotes();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                          content: Text('Task Deleted')));
+                  Navigator.of(context).pop();
+                },
+                child: Text("Accept"))
+          ],
+        );
+      },
+    );
   }
 }

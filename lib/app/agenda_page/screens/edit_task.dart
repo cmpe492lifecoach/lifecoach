@@ -113,9 +113,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
               width: width,
               child: Column(
                 children: <Widget>[
-                  MyBackButton(
-                    pushPop: 1,
-                  ),
+                  MyBackButton(),
                   SizedBox(
                     height: 30,
                   ),
@@ -498,24 +496,18 @@ class _EditTaskPageState extends State<EditTaskPage> {
     if (newTime != null) {
       setState(() {
         if (startBool) {
-          _startTimeShow = "${newTime.hour}:${newTime.minute}";
-          if (newTime.hour.toString().length < 2)
-            _startTimeShow = "0${newTime.hour}:${newTime.minute}";
-          if (newTime.minute.toString().length < 2)
-            _startTimeShow = "${newTime.hour}:0${newTime.minute}";
-          if (newTime.minute.toString().length < 2 &&
-              newTime.hour.toString().length < 2)
-            _startTimeShow = "0${newTime.hour}:0${newTime.minute}";
+          String myHour;
+          String myMin;
+          newTime.hour<10 ? myHour ="0${newTime.hour}" : myHour=newTime.hour.toString();
+          newTime.minute<10 ? myMin ="0${newTime.minute}" : myMin=newTime.minute.toString();
+          _startTimeShow = "$myHour:$myMin";
         }
         if (endBool) {
-          _endTimeShow = "${newTime.hour}:${newTime.minute}";
-          if (newTime.hour.toString().length < 2)
-            _endTimeShow = "0${newTime.hour}:${newTime.minute}";
-          if (newTime.minute.toString().length < 2)
-            _endTimeShow = "${newTime.hour}:0${newTime.minute}";
-          if (newTime.minute.toString().length < 2 &&
-              newTime.hour.toString().length < 2)
-            _endTimeShow = "0${newTime.hour}:0${newTime.minute}";
+          String myHour;
+          String myMin;
+          newTime.hour<10 ? myHour ="0${newTime.hour}" : myHour=newTime.hour.toString();
+          newTime.minute<10 ? myMin ="0${newTime.minute}" : myMin=newTime.minute.toString();
+          _endTimeShow = "$myHour:$myMin";
         }
         startBool = false;
         endBool = false;
