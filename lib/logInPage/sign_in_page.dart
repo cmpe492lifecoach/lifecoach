@@ -20,7 +20,12 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -63,7 +68,7 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
             Image.asset(
               'Images/logo.jpeg',
-              height: 120,
+              height: 320,
             ),
             SizedBox(
               height: 20,
@@ -126,8 +131,12 @@ class SignInPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
+            Image.asset(
+              'Images/logo.jpeg',
+              height: 200,
+            ),
             Text(
-              "How to login",
+              "Log In",
               textAlign: TextAlign.center,
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 32, color: Colors.green),
             ),
@@ -140,6 +149,7 @@ class SignInPage extends StatelessWidget {
               onPressed: () => _emailPasswordEntry(context),
               buttonText: "Email and Password",
               height: 60,
+              buttonColor: Colors.lightGreen,
 
 
 
@@ -181,9 +191,7 @@ class SignInPage extends StatelessWidget {
                   Expanded(
                     child: SignInButton.mini(
                         buttonType: ButtonType.google,
-                        onPressed: () {
-                          print('click');
-                        }),
+                      onPressed: () => _googleWithEnter(context),),
                   )
                 ],
               ),

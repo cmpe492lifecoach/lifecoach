@@ -22,9 +22,9 @@ class LandingPage extends StatelessWidget {
 
     if(_userModel.state == ViewState.Idle){
       if(_userModel.user == null){
-        return MyApp();
+        return SignInPage();
       }else{
-        return HomePage(user: _userModel.user);
+        return HomePage(user: _userModel.user);//HomePage(user: _userModel.user);
       }
     }else{
       return Scaffold(
