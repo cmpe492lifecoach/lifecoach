@@ -23,7 +23,7 @@ class SocialLogInButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 8),
+      margin: EdgeInsets.all(10),
       child: SizedBox(
         height: height,
         child: RaisedButton(onPressed: onPressed,
@@ -39,7 +39,9 @@ class SocialLogInButton extends StatelessWidget {
 
               Text(
                 buttonText,
+                textAlign: TextAlign.center,
                 style: TextStyle(color: textColor),
+
               ),
               Opacity(opacity: 0,)
 

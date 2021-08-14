@@ -80,7 +80,8 @@ class SportsPage extends StatelessWidget {
            ),
          ),
          BottomButton(
-           buttonTitle: 'CALCULATE',
+           buttonTitle: '',
+
            onTap: () {
 
 
