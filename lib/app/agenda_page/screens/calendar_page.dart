@@ -169,13 +169,14 @@ class CalendarPageState extends State<CalendarPage>
 
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         allNotes.isEmpty
                         ?GestureDetector(
+
                           child: Container(
 
-                            width: MediaQuery.of(context).size.width*0.9,
+                            width: MediaQuery.of(context).size.width*0.6,
                             height: 100,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
