@@ -24,26 +24,26 @@ class _IdealWeightPage extends State<IdealWeightPage> {
   bool centimeter;
   TextEditingController ftController = new TextEditingController();
   TextEditingController inchController = new TextEditingController();
-  var rowItem;
+  RowItem rowItem;
   List<DropdownMenuItem<String>> genderList;
   List<DropdownMenuItem<String>> typeList;
   String selectGender;
   String selectType;
   String string = "";
 
-  var resultModel;
+  ResultModel resultModel;
 
   @override
   void dispose() {
-    
+
     super.dispose();
   }
 
   @override
   void initState() {
     super.initState();
-passData();
-    
+    passData();
+
 
     Future.delayed(Duration.zero, () {
       setState(() {
@@ -113,9 +113,9 @@ passData();
           }
 
           String s =
-              ConstantData.meterToCm(ConstantData.feetAndInchToMeter(i1, i2))
-                  .round()
-                  .toString();
+          ConstantData.meterToCm(ConstantData.feetAndInchToMeter(i1, i2))
+              .round()
+              .toString();
 
           setState(() {
             ftController.text = s;
@@ -200,23 +200,23 @@ passData();
               ConstantWidget.getImage(themeColor, context, "height.png"),
               Expanded(
                 child: ConstantWidget.getDropDown(context, selectType, typeList,
-                    (value) {
-                  bool oldVal = centimeter;
+                        (value) {
+                      bool oldVal = centimeter;
 
-                  setState(() {
-                    selectType = value;
+                      setState(() {
+                        selectType = value;
 
-                    centimeter = (selectType == S.of(context).centimeter);
+                        centimeter = (selectType == S.of(context).centimeter);
 
-                    checkData(oldVal);
+                        checkData(oldVal);
 
-                    if (selectType == S.of(context).centimeter) {
-                      string = S.of(context).cm;
-                    } else {
-                      string = S.of(context).ft;
-                    }
-                  });
-                }),
+                        if (selectType == S.of(context).centimeter) {
+                          string = S.of(context).cm;
+                        } else {
+                          string = S.of(context).ft;
+                        }
+                      });
+                    }),
                 flex: 1,
               ),
               Expanded(
@@ -361,8 +361,8 @@ passData();
         resultModel = new ResultModel();
         resultModel.value1 = value1;
         resultModel.value2 = value2;
-passData();
-        
+        passData();
+
       }
     }
   }

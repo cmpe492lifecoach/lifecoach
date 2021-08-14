@@ -37,15 +37,19 @@ class _BloodPressurePage extends State<BloodPressurePage> {
   double factor;
   double factor1;
 
-   ResultModel resultModel;
+  ResultModel resultModel;
 
- 
+  @override
+  void dispose() {
+
+    super.dispose();
+  }
 
   @override
   void initState() {
     super.initState();
+    passData();
 
-    
 
     Future.delayed(Duration.zero, () {
       setState(() {
@@ -257,8 +261,8 @@ class _BloodPressurePage extends State<BloodPressurePage> {
 
       resultModel = new ResultModel();
       resultModel.value1 = result;
+      passData();
 
-     
     }
   }
 

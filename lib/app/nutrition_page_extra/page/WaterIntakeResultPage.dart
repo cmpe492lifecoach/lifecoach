@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:lifecoach_app/app/nutrition_page_extra//generated/l10n.dart';
-import 'package:lifecoach_app/app/nutrition_page_extra//model/ResultModel.dart';
-import 'package:lifecoach_app/app/nutrition_page_extra//model/RowItem.dart';
-import 'package:lifecoach_app/app/nutrition_page_extra//utils/ConstantData.dart';
-import 'package:lifecoach_app/app/nutrition_page_extra//utils/ConstantWidget.dart';
-import 'package:lifecoach_app/app/nutrition_page_extra//utils/SizeConfig.dart';
+import 'package:lifecoach_app/app/nutrition_page_extra/generated/l10n.dart';
+import 'package:lifecoach_app/app/nutrition_page_extra/model/ResultModel.dart';
+import 'package:lifecoach_app/app/nutrition_page_extra/model/RowItem.dart';
+import 'package:lifecoach_app/app/nutrition_page_extra/utils/ConstantData.dart';
+import 'package:lifecoach_app/app/nutrition_page_extra/utils/ConstantWidget.dart';
+import 'package:lifecoach_app/app/nutrition_page_extra/utils/SizeConfig.dart';
 
 class WaterIntakeResultPage extends StatefulWidget {
   final ResultModel resultModel;
@@ -105,7 +105,7 @@ class _WaterIntakeResultPage extends State<WaterIntakeResultPage> {
               right: defaultMargin,
               top: ConstantWidget.getWidthPercentSize(context, 1.5)),
           padding:
-              EdgeInsets.all(ConstantWidget.getScreenPercentSize(context, 1.5)),
+          EdgeInsets.all(ConstantWidget.getScreenPercentSize(context, 1.5)),
           decoration: ConstantWidget.getDecoration(context, themeColor),
           child: ConstantWidget.getDefaultTextWidget(
               S.of(context).take23GlassesOfWaterAdditionallyIfYouExercise,
@@ -144,14 +144,14 @@ class _WaterIntakeResultPage extends State<WaterIntakeResultPage> {
           Expanded(
             child: Center(
               child:
-                  ConstantWidget.textOverFlowWidget(s1, f, 1, textSize, color),
+              ConstantWidget.textOverFlowWidget(s1, f, 1, textSize, color),
             ),
             flex: 1,
           ),
           Expanded(
             child: Center(
               child:
-                  ConstantWidget.textOverFlowWidget(s3, f, 1, textSize, color),
+              ConstantWidget.textOverFlowWidget(s3, f, 1, textSize, color),
             ),
             flex: 1,
           )

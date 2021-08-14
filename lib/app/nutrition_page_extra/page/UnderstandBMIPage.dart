@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:lifecoach_app/app/nutrition_page_extra//generated/l10n.dart';
-import 'package:lifecoach_app/app/nutrition_page_extra//model/RowItem.dart';
-import 'package:lifecoach_app/app/nutrition_page_extra//utils/ConstantData.dart';
-import 'package:lifecoach_app/app/nutrition_page_extra//utils/ConstantWidget.dart';
-import 'package:lifecoach_app/app/nutrition_page_extra//utils/SizeConfig.dart';
+import 'package:lifecoach_app/app/nutrition_page_extra/generated/l10n.dart';
+import 'package:lifecoach_app/app/nutrition_page_extra/model/RowItem.dart';
+import 'package:lifecoach_app/app/nutrition_page_extra/utils/ConstantData.dart';
+import 'package:lifecoach_app/app/nutrition_page_extra/utils/ConstantWidget.dart';
+import 'package:lifecoach_app/app/nutrition_page_extra/utils/SizeConfig.dart';
 
 class UnderstandBMIPage extends StatefulWidget {
   final RowItem rowItem;

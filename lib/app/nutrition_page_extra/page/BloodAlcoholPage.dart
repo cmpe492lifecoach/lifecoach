@@ -41,15 +41,15 @@ class _BloodAlcoholPage extends State<BloodAlcoholPage> {
   String string = "";
 
   double factor;
-  double factor1; 
+  double factor1;
   ResultModel resultModel;
 
-  
+
 
   @override
   void initState() {
     super.initState();
- ;
+    ;
 
     Future.delayed(Duration.zero, () {
       setState(() {
@@ -231,12 +231,12 @@ class _BloodAlcoholPage extends State<BloodAlcoholPage> {
               Container(
                 width: ConstantWidget.getWidthPercentSize(context, 30),
                 child: ConstantWidget.getDropDown(context, selectTime, timeList,
-                    (value) {
-                  setState(() {
-                    selectTime = value;
-                    setFactor2();
-                  });
-                }),
+                        (value) {
+                      setState(() {
+                        selectTime = value;
+                        setFactor2();
+                      });
+                    }),
               )
             ],
           ),
@@ -390,7 +390,7 @@ class _BloodAlcoholPage extends State<BloodAlcoholPage> {
       resultModel = new ResultModel();
       resultModel.value1 = ConstantData.formatData(bac);
 
-       
+
     }
   }
 

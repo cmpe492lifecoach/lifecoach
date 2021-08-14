@@ -7,7 +7,7 @@ class User {
   final String userID;
   String email;
   String userName;
-  String profilURL;
+  String profileURL;
   DateTime createdAt;
   DateTime updatedAt;
   int level;
@@ -22,7 +22,7 @@ class User {
       'userID' : userID, //'userID'---> firebase e kaydedilecek değerler. userID--> sınıfımızdaki değerler
       'email' : email ?? '',
       'userName' : userName ??  email.substring(0, email.indexOf('@')) + randomGenerateNumber(),
-      'profilURL' : profilURL ?? 'https://tgtof.org.tr/wp-content/uploads/2019/08/bos-profil.png',
+      'profilURL' : profileURL ?? 'https://tgtof.org.tr/wp-content/uploads/2019/08/bos-profil.png',
       'createdAt' : createdAt ?? FieldValue.serverTimestamp(),
       'updatedAt' : updatedAt ?? FieldValue.serverTimestamp(),
       'level' : level ?? 1,
@@ -37,7 +37,7 @@ class User {
         userID = map['userID'],
         email = map['email'],
         userName = map['userName'],
-        profilURL = map['profilURL'],
+        profileURL = map['profilURL'],
         createdAt = (map['createdAt'] as Timestamp).toDate(),
         updatedAt = (map['updatedAt'] as Timestamp).toDate(),
         level = map['level'],
@@ -47,7 +47,7 @@ class User {
 
   @override
   String toString() {
-    return 'User{userID: $userID, email: $email, userName: $userName, profilURL: $profilURL, createdAt: $createdAt, updatedAt: $updatedAt, level: $level, weight: $weight, height: $height, afterBeforePhoto: $afterBeforePhoto}';
+    return 'User{userID: $userID, email: $email, userName: $userName, profilURL: $profileURL, createdAt: $createdAt, updatedAt: $updatedAt, level: $level, weight: $weight, height: $height, afterBeforePhoto: $afterBeforePhoto}';
   }
 //username oluşturulurken uniq olması için yanına koyulan random sayı methodu.
   String randomGenerateNumber() {

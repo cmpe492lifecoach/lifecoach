@@ -47,11 +47,16 @@ class _CaloriesWeightPage extends State<CaloriesWeightPage> {
   ResultModel resultModel;
 
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
 
   @override
   void initState() {
-    super.initState();passData();
-    
+    super.initState();
+    passData();
 
 
     Future.delayed(Duration.zero, () {
@@ -160,9 +165,9 @@ class _CaloriesWeightPage extends State<CaloriesWeightPage> {
           }
 
           String s =
-              ConstantData.meterToCm(ConstantData.feetAndInchToMeter(i1, i2))
-                  .round()
-                  .toString();
+          ConstantData.meterToCm(ConstantData.feetAndInchToMeter(i1, i2))
+              .round()
+              .toString();
 
           setState(() {
             ftController.text = s;
@@ -632,7 +637,7 @@ class _CaloriesWeightPage extends State<CaloriesWeightPage> {
 
       stringBmr = ConstantData.formatData(bmr);
 
-       resultModel = new ResultModel();
+      resultModel = new ResultModel();
       resultModel.value1 = stringBmr;
 
       if (ConstantData.check(targetWeightController.text)) {
@@ -659,8 +664,8 @@ class _CaloriesWeightPage extends State<CaloriesWeightPage> {
         }
 
 
-passData();
-        
+
+        passData();
 
         // Navigator.push(
         //     context,
@@ -669,7 +674,7 @@ passData();
         //     ));
 
       }
-      
+
     }
   }
 

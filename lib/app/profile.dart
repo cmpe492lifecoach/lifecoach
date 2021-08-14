@@ -16,7 +16,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   TextEditingController _controllerUserName;
   TextEditingController _controllerHeight;
-  File _profilePhoto;
+  //File _profilePhoto;
   final ImagePicker _picker = ImagePicker();
 
   @override
@@ -36,13 +36,13 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
 
-  void _choosePhoto(ImageSource source) async{
+  /*void _choosePhoto(ImageSource source) async{
     var _pickedFoto = await _picker.getImage(source: source);
     setState(() {
       _profilePhoto = File(_pickedFoto.path);
       Navigator.of(context).pop();
     });
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +69,7 @@ class _ProfilePageState extends State<ProfilePage> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: GestureDetector(
-                  onTap: () {
+                  /*onTap: () {
                     showModalBottomSheet(context: context, builder: (context){
                       return Container(
                         height: 230,
@@ -89,11 +89,11 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       );
                     });
-                  },
+                  },*/
                   child: CircleAvatar(
                     radius: 75,
                     backgroundColor: Colors.white,
-                    backgroundImage: AssetImage('assets/images/avatar.png')
+                    backgroundImage: AssetImage('assets/images/pp.jpeg')
                   ),
                 ),
               ),

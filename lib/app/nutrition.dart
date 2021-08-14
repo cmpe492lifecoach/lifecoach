@@ -93,7 +93,7 @@ class NutritionPage extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Nutrition Page',
       theme: themeData,
-      home: MyHomePage(title: 'Life Coach Home Page',isSplash: true,),
+      home: MyHomePage(title: 'Life Coach Home Page',isSplash: false,),
     );
   }
 }
@@ -110,10 +110,10 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   MotionTabBar motionTabBar;
-  List<String> s = ["Setting", "Home", "Profile"];
+  List<String> s = ["Setting", "Profile"];
   List<RowItem> rowItemList = [];
   MotionTabController _tabController;
-  int _selectedIndex = 2;
+  int _selectedIndex = 1;
   RowItem rowItem;
 
   TextEditingController ageController = new TextEditingController();
@@ -336,12 +336,12 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
           fontFamily: ConstantData.fontFamily),
     );
 
-    List<Widget> getList = [getProfilePage(), getSettingPage(), getHomePage()];
+    List<Widget> getList = [getProfilePage(), getHomePage()];
     return WillPopScope(
         child: (isSplash)?getSplash():
         Scaffold(
           bottomNavigationBar: FABBottomAppBar(
-            centerItemText: "Home",
+
             backgroundColor: ConstantData.accentColor,
             color: Colors.white60,
             selectedColor: Colors.white,
@@ -350,13 +350,11 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             items: [
               FABBottomAppBarItem(
                   iconData: Icons.account_circle, text: "Profile"),
-              FABBottomAppBarItem(iconData: Icons.settings, text: "Setting"),
+              FABBottomAppBarItem(iconData: Icons.settings, text: "Tools"),
             ],
           ),
 
-          floatingActionButtonLocation:
-          FloatingActionButtonLocation.centerDocked,
-          floatingActionButton: _buildFab(context),
+
 
           body: getList[_selectedIndex],
 

@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:lifecoach_app/app/nutrition_page_extra//generated/l10n.dart';
-import 'package:lifecoach_app/app/nutrition_page_extra//model/ResultModel.dart';
-import 'package:lifecoach_app/app/nutrition_page_extra//model/RowItem.dart';
-import 'package:lifecoach_app/app/nutrition_page_extra//utils/ConstantData.dart';
-import 'package:lifecoach_app/app/nutrition_page_extra//utils/ConstantWidget.dart';
-import 'package:lifecoach_app/app/nutrition_page_extra//utils/SizeConfig.dart';
+import 'package:lifecoach_app/app/nutrition_page_extra/generated/l10n.dart';
+import 'package:lifecoach_app/app/nutrition_page_extra/model/ResultModel.dart';
+import 'package:lifecoach_app/app/nutrition_page_extra/model/RowItem.dart';
+import 'package:lifecoach_app/app/nutrition_page_extra/utils/ConstantData.dart';
+import 'package:lifecoach_app/app/nutrition_page_extra/utils/ConstantWidget.dart';
+import 'package:lifecoach_app/app/nutrition_page_extra/utils/SizeConfig.dart';
 
 class ResultPage extends StatefulWidget {
   final ResultModel resultModel;
@@ -56,7 +56,7 @@ class _ResultPage extends State<ResultPage> {
 
         Container(
           margin:
-              EdgeInsets.all(ConstantWidget.getScreenPercentSize(context, 4)),
+          EdgeInsets.all(ConstantWidget.getScreenPercentSize(context, 4)),
           alignment: Alignment.center,
           child: Wrap(
             children: [
@@ -87,7 +87,7 @@ class _ResultPage extends State<ResultPage> {
 
         Container(
           margin:
-              EdgeInsets.all(ConstantWidget.getScreenPercentSize(context, 2)),
+          EdgeInsets.all(ConstantWidget.getScreenPercentSize(context, 2)),
           child: ConstantWidget.getDefaultTextWidget(
               widget.resultModel.value1 +
                   " " +

@@ -173,7 +173,7 @@ class ConstantWidget {
     return Container(
       width: double.infinity,
       margin:
-          EdgeInsets.only(top: ConstantWidget.getPercentSize(cellHeight, 30)),
+      EdgeInsets.only(top: ConstantWidget.getPercentSize(cellHeight, 30)),
       child: DropdownButton(
         isExpanded: true,
 
@@ -214,19 +214,19 @@ class ConstantWidget {
     return
 
 
-        Container(
+      Container(
 
 
-      margin: EdgeInsets.only(
-          right: ConstantWidget.getWidthPercentSize(context, 4)),
-      child: Image.asset(
-        ConstantData.assetsPath + s,
-        color: color,
-        height: imgHeight,
-        width: imgWidth,
-      ),
-      // ),
-    );
+        margin: EdgeInsets.only(
+            right: ConstantWidget.getWidthPercentSize(context, 4)),
+        child: Image.asset(
+          ConstantData.assetsPath + s,
+          color: color,
+          height: imgHeight,
+          width: imgWidth,
+        ),
+        // ),
+      );
   }
 
   static getButton(BuildContext context,String s,Color color,Function function){
@@ -235,9 +235,9 @@ class ConstantWidget {
 
     double subRadius = ConstantWidget.getWidthPercentSize(context, 1.5);
     double fontSize = ConstantWidget.getPercentSize(buttonHeight, 32);
-      double sliderHeight = SizeConfig.safeBlockVertical * 18;
+    double sliderHeight = SizeConfig.safeBlockVertical * 18;
 
-      double margin = ConstantWidget.getPercentSize(sliderHeight, 13);
+    double margin = ConstantWidget.getPercentSize(sliderHeight, 13);
 
     return InkWell(
       child: Container(
@@ -257,7 +257,7 @@ class ConstantWidget {
 
 
   static getDecoration(BuildContext context,Color themeColor){
-  return  BoxDecoration(
+    return  BoxDecoration(
         color: Colors.white,
         border: Border.all(
             color: themeColor,
@@ -268,9 +268,9 @@ class ConstantWidget {
   static getBanner(){
 
     return Container(
-      height: 55,
-      color: ConstantData.bgColor,
-      child: Text("asd")
+        height: 55,
+        color: ConstantData.bgColor,
+        child: Text("")
     );
   }
   static getAppBar(String s,Color color,Color iconColor,double elevation,Function function){
@@ -414,14 +414,14 @@ class ConstantWidget {
                                     children: [
                                       Container(
                                         margin: EdgeInsets.only(
-                                          top:ConstantWidget.getPercentSize(
-                                      sliderHeight, 22),
+                                            top:ConstantWidget.getPercentSize(
+                                                sliderHeight, 22),
                                             left: ConstantWidget.getWidthPercentSize(
                                                 context, 50)),
                                         child: Center(
                                           child: Image.asset(ConstantData.assetsPath +
                                               rowItem.transImage),
-                                              // "transparent_bmi_icon.png"),
+                                          // "transparent_bmi_icon.png"),
                                         ),
                                       ),
                                       Column(
@@ -485,11 +485,11 @@ class ConstantWidget {
             builder: (context) => widget,
           ));
     }
-      // Navigator.push(
-      //     context,
-      //     MaterialPageRoute(
-      //       builder: (context) => widget,
-      //     ));
+    // Navigator.push(
+    //     context,
+    //     MaterialPageRoute(
+    //       builder: (context) => widget,
+    //     ));
 
   }
 
@@ -517,7 +517,7 @@ class ConstantWidget {
                   decoration: BoxDecoration(
                       color: themeColor,
                       borderRadius:
-                          BorderRadius.all(Radius.circular(subRadius))),
+                      BorderRadius.all(Radius.circular(subRadius))),
                   child: Center(
                     child: ConstantWidget.getDefaultTextWidget(
                         S.of(context).calculate,
@@ -543,10 +543,10 @@ class ConstantWidget {
                       color: Colors.transparent,
                       border: Border.all(
                           width:
-                              ConstantWidget.getPercentSize(buttonHeight, 1.5),
+                          ConstantWidget.getPercentSize(buttonHeight, 1.5),
                           color: themeColor),
                       borderRadius:
-                          BorderRadius.all(Radius.circular(subRadius))),
+                      BorderRadius.all(Radius.circular(subRadius))),
                   child: Center(
                     child: ConstantWidget.getDefaultTextWidget(
                         S.of(context).reset,
